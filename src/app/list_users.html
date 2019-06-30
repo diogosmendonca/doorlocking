@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <title>List of Users</title>
+    <meta charset='UTF-8'>
+</head>
+<body>
+    <h1>List of Users</h1>
+    <table border='1'>
+        <tr >
+            <td>Username</td>
+            <td>Status</td>
+            <td>Change Status</td>
+        </tr>
+        <tr>
+            <td>user1</td>
+            <td>Active</td>
+            <td><a href='/deactivate?user=user1'>Deactivate</td>
+        </tr>
+        <tr>
+            <td>user2</td>
+            <td>Inactive</td>
+            <td><a href='/activate?user=user2'>Activate</a></td>
+        </tr>
+    </table>
+    <br/>
+    <input type='button' value='Back' onclick="javascript:history.back();">
+</body>
+</html>

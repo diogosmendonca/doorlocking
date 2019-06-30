@@ -1,0 +1,15 @@
+{
+  "name": "doorlocking",
+  "version": "1.0.0",
+  "description": "An app to open a door",
+  "main": "login.html",
+  "scripts": {
+    "lite": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Diogo S. Mendonça",
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.5.3"
+  }
+}

@@ -3,4 +3,5 @@
 *.dev
 *.layout
 *.win
+/src/app/node_modules
 
