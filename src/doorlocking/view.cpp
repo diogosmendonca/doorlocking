@@ -1,37 +1,54 @@
 #include "view.h"
+#include "control.h"
 
 View::View(ESP8266WebServerSecure* server){
 	this->server = server;	
 }
 
 void View::home(){
-	login();
+  login_page();
 }
 
 void View::menu(){
-	
+  menu_admin();
 }
 
-void View::login(){
-	String page = 
-	"<!DOCTYPE html>"
-	"<html lang='en'>"
-	"<head>"
-		"<title>Login</title>"
-	"</head>"
-	"<body>"
-		"<h1>Login</h1>"
-		"<form name='login' action='/login' method='POST'>"
-			"<fieldset>"
-				"<legend>Authentication</legend>"
-				"<label for='username'>Username:</lable><br/>"
-				"<input type='text' name='username' id='username'/><br/>"
-				"<label for='access_code'>Acess Code:</lable><br/>"
-				"<input type='text' name='access_code' id='access_code'/><br/>"
-				"<button type='submit'>Enter</button>"
-			"</fieldset>"
-		"</form>"
-	"</body>"
-	"</html>";
-  server->send(200, "text/html", page);
+void View::menu_user(){
+  server->send(200, "text/html", readFile("/menu_user.html"));
+}
+
+void View::menu_admin(){
+  server->send(200, "text/html", readFile("/menu_admin.html"));
+}
+
+void View::login_page(){
+  server->send(200, "text/html", readFile("/login.html"));
+}
+
+void View::login_handler(){
+  
+}
+
+void View::list_users(){
+  server->send(200, "text/html", readFile("/list_users.html"));
+}
+
+void View::register_user_page(){
+  server->send(200, "text/html", readFile("/register_user.html"));
+}
+
+void View::register_user_handler(){
+  
+}
+
+void View::activate_user_handler(){
+  
+}
+
+void View::deactivate_user_handler(){
+  
+}
+
+void View::view_logs_handler(){
+  
 }

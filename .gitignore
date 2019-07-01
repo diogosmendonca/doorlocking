@@ -4,4 +4,7 @@
 *.layout
 *.win
 /src/app/node_modules
+/src/app/.vscode
+/src/doorlocking/data
+/src/doorlocking/.vscode
 

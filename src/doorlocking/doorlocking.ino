@@ -1,6 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServerSecure.h>
 #include <DNSServer.h>
+#include <FS.h>
 #include "view.h"
 
 const char* ssid = "DOOR-NETWORK";
@@ -22,6 +23,7 @@ static const char serverKey[] PROGMEM = R"EOF(
 
 void setup(void){
  Serial.begin(115200);
+ SPIFFS.begin();
  if (WiFi.softAP(ssid, password) == false) {
   Serial.println("WiFi.softAP - error - exiting");
   return;
@@ -33,10 +35,22 @@ void setup(void){
   Serial.println("WiFi.softAPConfig - error - exiting");
   return;
  }
- dnsServer.start(DNS_PORT, "porta.cefet-rj.br", Ip);
+ dnsServer.start(DNS_PORT, "doorlocking.app", Ip);
  
  server.setRSACert(new  BearSSL::X509List(serverCert), new BearSSL::PrivateKey(serverKey));
+
+ //register the URLs and handlers
  server.on("/", [](){view.home();});
+ server.on("/login", [](){view.login_page();});
+ server.on("/login_handler", [](){view.login_handler();});
+ server.on("/menu", [](){view.menu();});
+ server.on("/register_user", [](){view.register_user_page();});
+ server.on("/register_user_handler", [](){view.register_user_handler();});
+ server.on("/list_users", [](){view.list_users();});
+ server.on("/activate_user_handler", [](){view.activate_user_handler();});
+ server.on("/deactivate_user_handler", [](){view.deactivate_user_handler();});
+ server.on("/view_logs_handler", [](){view.view_logs_handler();});
+ 
  server.begin();
  Serial.println("HTTPS server started");
 }
