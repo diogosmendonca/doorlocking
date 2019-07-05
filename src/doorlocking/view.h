@@ -21,6 +21,7 @@ class View{
     void activate_user_handler();
     void deactivate_user_handler();
     void view_logs_handler();
+    void open_door_handler();
 };
 
 

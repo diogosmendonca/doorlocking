@@ -49,7 +49,8 @@ void setup(void){
  server.on("/list_users", [](){view.list_users();});
  server.on("/activate_user_handler", [](){view.activate_user_handler();});
  server.on("/deactivate_user_handler", [](){view.deactivate_user_handler();});
- server.on("/view_logs_handler", [](){view.view_logs_handler();});
+ server.on("/view_logs", [](){view.view_logs_handler();});
+ server.on("/open_door", [](){view.open_door_handler();});
  
  server.begin();
  Serial.println("HTTPS server started");
