@@ -36,7 +36,23 @@ void View::login_handler(){
 }
 
 void View::list_users(){
-  server->send(200, "text/html", readFile("/list_users.html"));
+  String strUsersList;
+  vector<User> users;
+  getUsers(users);
+
+  for(int i = 0; i < users.size(); i++){
+    strUsersList += "<tr><td>" + users[i].username + "</td><td>"; 
+    strUsersList += (users[i].userStatus == ACTIVE ? "Active" : "Inactive"); 
+    strUsersList += "</td><td><a href='"; 
+    strUsersList += (users[i].userStatus == INACTIVE ? "/activate_user_handler?username=" + users[i].userStatus 
+                                         : "/deactivate_user_handler?username=" + users[i].username);
+    strUsersList += "'>";
+    strUsersList += (users[i].userStatus == INACTIVE ? "Activate" : "Deactivate");
+    strUsersList += "</a></td></tr>";
+  }
+  String listUsersPage = readFile("/list_users.html");
+  listUsersPage.replace("##USERS##", strUsersList);
+  server->send(200, "text/html", listUsersPage);
 }
 
 void View::register_user_page(){

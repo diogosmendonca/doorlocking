@@ -43,7 +43,7 @@ bool authenticate(String login, String password){
 
 
 void getUsers(vector<User>& users){
-  File f = SPIFFS.open("/users.txt", "r");
+  File f = SPIFFS.open("users.txt", "r");
   String line;
   User u;
   while (f.available()) {
