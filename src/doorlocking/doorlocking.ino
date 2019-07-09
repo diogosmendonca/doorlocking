@@ -43,10 +43,10 @@ void setup(void){
  server.on("/", [](){view.home();});
  server.on("/login", [](){view.login_page();});
  server.on("/login_handler", [](){view.login_handler();});
- server.on("/menu", [](){view.menu();});
+ server.on("/menu", [](){view.menu("");});
  server.on("/register_user", [](){view.register_user_page();});
  server.on("/register_user_handler", [](){view.register_user_handler();});
- server.on("/list_users", [](){view.list_users();});
+ server.on("/list_users", [](){view.list_users("");});
  server.on("/activate_user_handler", [](){view.activate_user_handler();});
  server.on("/deactivate_user_handler", [](){view.deactivate_user_handler();});
  server.on("/view_logs", [](){view.view_logs_handler();});

@@ -11,16 +11,20 @@ void View::home(){
   login_page();
 }
 
-void View::menu(){
-  menu_admin();
+void View::menu(String msg){
+  menu_admin(msg);
 }
 
-void View::menu_user(){
-  server->send(200, "text/html", readFile("/menu_user.html"));
+void View::menu_user(String msg){
+  String menuPage = readFile("/menu_user.html");
+  menuPage.replace("##MSG##", msg);
+  server->send(200, "text/html", menuPage);
 }
 
-void View::menu_admin(){
-  server->send(200, "text/html", readFile("/menu_admin.html"));
+void View::menu_admin(String msg){
+  String menuPage = readFile("/menu_admin.html");
+  menuPage.replace("##MSG##", msg);
+  server->send(200, "text/html", menuPage);
 }
 
 void View::login_page(){
@@ -32,10 +36,9 @@ void View::login_handler(){
   if(server->hasArg("login") && server->hasArg("password")){
     authentication = authenticate(server->arg("login"), server->arg("password"));
   }
-  
 }
 
-void View::list_users(){
+void View::list_users(String msg){
   String strUsersList;
   vector<User> users;
   getUsers(users);
@@ -44,7 +47,7 @@ void View::list_users(){
     strUsersList += "<tr><td>" + users[i].username + "</td><td>"; 
     strUsersList += (users[i].userStatus == ACTIVE ? "Active" : "Inactive"); 
     strUsersList += "</td><td><a href='"; 
-    strUsersList += (users[i].userStatus == INACTIVE ? "/activate_user_handler?username=" + users[i].userStatus 
+    strUsersList += (users[i].userStatus == INACTIVE ? "/activate_user_handler?username=" + users[i].username 
                                          : "/deactivate_user_handler?username=" + users[i].username);
     strUsersList += "'>";
     strUsersList += (users[i].userStatus == INACTIVE ? "Activate" : "Deactivate");
@@ -52,6 +55,7 @@ void View::list_users(){
   }
   String listUsersPage = readFile("/list_users.html");
   listUsersPage.replace("##USERS##", strUsersList);
+  listUsersPage.replace("##MSG##", msg);
   server->send(200, "text/html", listUsersPage);
 }
 
@@ -96,15 +100,36 @@ void View::register_user_handler(){
 }
 
 void View::activate_user_handler(){
-  
+  String username;
+  String msg;
+  if(server->hasArg("username")){
+    username = server->arg("username");
+    if(changeUserState(username, ACTIVE)){
+      msg = "User activated with success!";
+    }else{
+      msg = "An problem occurred during user activation.";
+    }
+  }
+  this->list_users(msg);
 }
 
 void View::deactivate_user_handler(){
-  
+  String username;
+  String msg;
+  if(server->hasArg("username")){
+    username = server->arg("username");
+    if(changeUserState(username, INACTIVE)){
+      msg = "User deactivated with success!";
+    }else{
+      msg = "An problem occurred during user deactivation.";
+    }
+  }
+  this->list_users(msg);
 }
 
 void View::view_logs_handler(){
-  
+  String f = readFile("users.txt");
+  server->send(200, "text/plain", f);
 }
 
 void View::open_door_handler(){

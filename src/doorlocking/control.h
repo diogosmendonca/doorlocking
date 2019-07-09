@@ -22,4 +22,6 @@ void getUsers(vector<User> &users);
 
 bool usernameExists(String username, vector<User> &users);
 
+bool changeUserState(String username, enum StatusEnum state);
+
 #endif

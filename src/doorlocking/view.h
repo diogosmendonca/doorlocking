@@ -10,12 +10,12 @@ class View{
 	public:
 		View(ESP8266WebServerSecure* server);
 		void home();
-    void menu();
-		void menu_user();
-    void menu_admin();
+    void menu(String msg);
+		void menu_user(String msg);
+    void menu_admin(String msg);
 		void login_page();
     void login_handler();
-	  void list_users();
+	  void list_users(String msg);
     void register_user_page();
     void register_user_handler();
     void activate_user_handler();

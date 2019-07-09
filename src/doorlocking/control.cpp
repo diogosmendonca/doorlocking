@@ -73,3 +73,38 @@ String registerUser(String username){
   f.close();
   return accessCode;
 }
+
+
+bool changeUserState(String username, enum StatusEnum state){
+  String usersFile = readFile("users.txt");
+  File f;
+  bool foundField = false;
+  int fieldIndex;
+  
+  //find the user
+  int usernameIndex = usersFile.indexOf(username);
+  bool foundUser = usernameIndex >= 0;
+  
+  if(foundUser){
+    
+    //change its record
+    //positioning the cursos in status field
+    fieldIndex = usersFile.indexOf('|', usersFile.indexOf('|',usernameIndex)+1);
+    
+    if (fieldIndex > 0){
+      foundField = true;
+    
+      //set the state
+      usersFile.setCharAt(fieldIndex + 1, state == ACTIVE ? '1' : '0');
+
+      //rewrite the whole file
+      f = SPIFFS.open("users.txt", "w");
+      
+      //write the new state
+      f.print(usersFile);
+      f.close();
+    }
+  }
+  
+  return foundUser && foundField;
+}
