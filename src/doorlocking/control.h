@@ -14,7 +14,7 @@ String readFile(String fileName);
 
 String newAccessCode();
 
-bool authenticate(String login, String password);
+bool authenticate(String username, String accessCode, User& u);
 
 String registerUser(String username);
 

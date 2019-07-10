@@ -8,7 +8,7 @@ View::View(ESP8266WebServerSecure* server){
 }
 
 void View::home(){
-  login_page();
+  login_page("");
 }
 
 void View::menu(String msg){
@@ -27,15 +27,48 @@ void View::menu_admin(String msg){
   server->send(200, "text/html", menuPage);
 }
 
-void View::login_page(){
-  server->send(200, "text/html", readFile("/login.html"));
+void View::login_page(String msg){
+  String loginPage = readFile("/login.html");
+  loginPage.replace("##MSG##", msg);
+  server->send(200, "text/html", loginPage);
 }
 
 void View::login_handler(){
   bool authentication = false;
-  if(server->hasArg("login") && server->hasArg("password")){
-    authentication = authenticate(server->arg("login"), server->arg("password"));
+  User u;
+  String redirectPage;
+  
+  if(server->hasArg("username") && server->hasArg("accessCode")){
+    if(authenticate(server->arg("username"), server->arg("accessCode"), u)){
+      //create a new session
+      
+      //set a cookie in the header
+
+      //redirect to menu page
+      if(u.type == ADMIN){
+        menu_admin("Welcome " + u.username);
+      }else{
+        menu_user("Welcome " + u.username);
+      }
+    }else{
+      //authentication fail
+
+      //increment the fail counter for the user
+
+      //redirect to login page
+      login_page("Authentication Failed");
+    }
+  }else{
+    //missing field in form
+
+    //redirect to login page
+    login_page("Authentication Failed");
   }
+  
+}
+
+void View::logout_handler(){
+  login_page("");
 }
 
 void View::list_users(String msg){
@@ -128,7 +161,7 @@ void View::deactivate_user_handler(){
 }
 
 void View::view_logs_handler(){
-  String f = readFile("users.txt");
+  String f = readFile("/users.txt");
   server->send(200, "text/plain", f);
 }
 

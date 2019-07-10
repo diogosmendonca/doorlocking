@@ -41,8 +41,9 @@ void setup(void){
 
  //register the URLs and handlers
  server.on("/", [](){view.home();});
- server.on("/login", [](){view.login_page();});
+ server.on("/login", [](){view.login_page("");});
  server.on("/login_handler", [](){view.login_handler();});
+ server.on("/logout_handler", [](){view.logout_handler();});
  server.on("/menu", [](){view.menu("");});
  server.on("/register_user", [](){view.register_user_page();});
  server.on("/register_user_handler", [](){view.register_user_handler();});

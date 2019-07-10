@@ -37,13 +37,25 @@ String newAccessCode(){
   return accessCode;
 }
 
-bool authenticate(String login, String password){
-  return false;
+bool authenticate(String username, String accessCode, User& u){
+  vector<User> users;
+  getUsers(users);
+  bool authenticated = false;
+  for(int i = 0; i < users.size(); i++){
+    if((users[i].username == username) && 
+       (users[i].userStatus == ACTIVE) && 
+       (users[i].accessCode == accessCode)){
+      authenticated = true;
+      u = users[i];
+    }
+  }
+  
+  return authenticated;
 }
 
 
 void getUsers(vector<User>& users){
-  File f = SPIFFS.open("users.txt", "r");
+  File f = SPIFFS.open("/users.txt", "r");
   String line;
   User u;
   while (f.available()) {
@@ -51,6 +63,7 @@ void getUsers(vector<User>& users){
     u.username = getValue(line, '|', 0);
     u.accessCode = getValue(line, '|', 1);
     u.userStatus = static_cast<StatusEnum>(getValue(line, '|', 2).toInt());
+    u.type = static_cast<UserTypeEnum>(getValue(line, '|', 3).toInt());
     users.push_back(u);
   }
   f.close();
@@ -68,15 +81,15 @@ bool usernameExists(String username, vector<User> &users){
 
 String registerUser(String username){
   String accessCode = newAccessCode();
-  File f = SPIFFS.open("users.txt", "a");
-  f.println(username + "|" + accessCode + "|" + ACTIVE);
+  File f = SPIFFS.open("/users.txt", "a");
+  f.println(username + "|" + accessCode + "|" + ACTIVE + "|" + NORMAL_USER);
   f.close();
   return accessCode;
 }
 
 
 bool changeUserState(String username, enum StatusEnum state){
-  String usersFile = readFile("users.txt");
+  String usersFile = readFile("/users.txt");
   File f;
   bool foundField = false;
   int fieldIndex;
@@ -98,7 +111,7 @@ bool changeUserState(String username, enum StatusEnum state){
       usersFile.setCharAt(fieldIndex + 1, state == ACTIVE ? '1' : '0');
 
       //rewrite the whole file
-      f = SPIFFS.open("users.txt", "w");
+      f = SPIFFS.open("/users.txt", "w");
       
       //write the new state
       f.print(usersFile);

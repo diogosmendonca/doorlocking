@@ -3,10 +3,13 @@
 
 enum StatusEnum {INACTIVE, ACTIVE};
 
+enum UserTypeEnum {NORMAL_USER, ADMIN};
+
 struct user{
   String username;
   String accessCode;
   StatusEnum userStatus;
+  UserTypeEnum type; 
 };
 
 typedef struct user User;
@@ -22,11 +25,11 @@ struct log_register{
 typedef struct log_register LogRegister;
 
 struct session{
+  String username;
   String sessionid;
   time_t startTime;
   time_t expires;
   StatusEnum sessionStatus;
-  String username;
 };
 
 typedef struct session UserSession;
