@@ -24,9 +24,9 @@ String readFile(String fileName){
   return sFile;
 }
 
-String newAccessCode(){
+String ramdomString(int strSize){
   String accessCode;
-  for(int i = 0; i < ACCESS_CODE_SIZE; i++){
+  for(int i = 0; i < strSize; i++){
     byte randomValue = random(0, 37);
     char letter = randomValue + 'a';
     if(randomValue > 26)
@@ -69,6 +69,22 @@ void getUsers(vector<User>& users){
   f.close();
 }
 
+void retrieveUser(User& user){
+  File f = SPIFFS.open("/users.txt", "r");
+  String line, username;
+  User u;
+  while (f.available()) {
+    line = f.readStringUntil('\n');
+    username = getValue(line, '|', 0);
+    if(username == user.username){
+      user.accessCode = getValue(line, '|', 1);
+      user.userStatus = static_cast<StatusEnum>(getValue(line, '|', 2).toInt());
+      user.type = static_cast<UserTypeEnum>(getValue(line, '|', 3).toInt());
+    }
+  }
+  f.close();
+}
+
 bool usernameExists(String username, vector<User> &users){
   bool alreadyExists = false;
   for(int i = 0; i < users.size(); i++){
@@ -80,7 +96,7 @@ bool usernameExists(String username, vector<User> &users){
 }
 
 String registerUser(String username){
-  String accessCode = newAccessCode();
+  String accessCode = ramdomString(10);
   File f = SPIFFS.open("/users.txt", "a");
   f.println(username + "|" + accessCode + "|" + ACTIVE + "|" + NORMAL_USER);
   f.close();
@@ -120,4 +136,25 @@ bool changeUserState(String username, enum StatusEnum state){
   }
   
   return foundUser && foundField;
+}
+
+bool createSession(User& user, UserSession& session){
+  String sessionId = ramdomString(16);
+  File f = SPIFFS.open("/sessions.txt", "a");
+  
+  session.username = user.username;
+  session.sessionId = sessionId;
+  session.sessionStatus = ACTIVE;
+  
+  f.println(session.sessionId + "|" + session.username + "|" + session.sessionStatus);
+  f.close();
+  return true;
+}
+
+bool retrieveSession(UserSession& session){
+  return true;
+}
+
+bool invalidadeSessions(String username){
+  return true;
 }

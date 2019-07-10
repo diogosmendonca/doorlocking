@@ -52,6 +52,12 @@ void setup(void){
  server.on("/deactivate_user_handler", [](){view.deactivate_user_handler();});
  server.on("/view_logs", [](){view.view_logs_handler();});
  server.on("/open_door", [](){view.open_door_handler();});
+
+  //here the list of headers to be recorded
+  const char * headerkeys[] = {"User-Agent", "Cookie"} ;
+  size_t headerkeyssize = sizeof(headerkeys) / sizeof(char*);
+  //ask server to track these headers
+  server.collectHeaders(headerkeys, headerkeyssize);
  
  server.begin();
  Serial.println("HTTPS server started");

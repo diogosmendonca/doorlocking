@@ -5,14 +5,11 @@
 #include "model.h"
 #include <vector>
 
-#define MAX_INT 2147483647
-#define ACCESS_CODE_SIZE 10
-
 using namespace std;
 
 String readFile(String fileName);
 
-String newAccessCode();
+String ramdomString(int size);
 
 bool authenticate(String username, String accessCode, User& u);
 
@@ -20,8 +17,16 @@ String registerUser(String username);
 
 void getUsers(vector<User> &users);
 
+void retrieveUser(User& user);
+
 bool usernameExists(String username, vector<User> &users);
 
 bool changeUserState(String username, enum StatusEnum state);
+
+bool createSession(User& user, UserSession& session);
+
+bool retrieveSession(UserSession& session);
+
+bool invalidadeSessions(String username);
 
 #endif

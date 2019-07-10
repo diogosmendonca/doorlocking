@@ -26,7 +26,7 @@ typedef struct log_register LogRegister;
 
 struct session{
   String username;
-  String sessionid;
+  String sessionId;
   time_t startTime;
   time_t expires;
   StatusEnum sessionStatus;

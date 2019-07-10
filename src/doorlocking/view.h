@@ -7,6 +7,7 @@
 class View{
 	private:
 		ESP8266WebServerSecure* server;
+    bool is_authenticated();
 	public:
 		View(ESP8266WebServerSecure* server);
 		void home();
