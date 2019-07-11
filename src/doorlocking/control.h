@@ -25,7 +25,7 @@ bool changeUserState(String username, enum StatusEnum state);
 
 bool createSession(User& user, UserSession& session);
 
-bool retrieveSession(UserSession& session);
+bool retrieveSession(String sessionIdParam, UserSession& session);
 
 bool invalidadeSessions(String username);
 

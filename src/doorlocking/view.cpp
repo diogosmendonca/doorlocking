@@ -8,7 +8,8 @@ View::View(ESP8266WebServerSecure* server){
 }
 
 void View::home(){
-  if(!is_authenticated()){
+  UserSession session;
+  if(!is_authenticated(session)){
     login_page("");
     return;
   }
@@ -17,7 +18,8 @@ void View::home(){
 }
 
 void View::menu(String msg){
-  if(!is_authenticated()){
+  UserSession session;
+  if(!is_authenticated(session)){
     login_page("");
     return;
   }
@@ -86,15 +88,35 @@ void View::login_handler(){
 }
 
 //Check if header is present and correct
-bool View::is_authenticated() {
+bool View::is_authenticated(UserSession& session) {
+  String cookieName = "__Secure-Session-ID=";
+  int cookieStartIndex, cookieEndIndex;
+  bool sessionFound = false;
+  String sessionId;
+  
   Serial.println("Enter is_authenticated");
   if(server->hasHeader("Cookie")) {
     Serial.print("Found cookie: ");
     String cookie = server->header("Cookie");
     Serial.println(cookie);
-    if(cookie.indexOf("__Secure-Session-ID=") != -1) {
-      Serial.println("Authentication Successful");
-      return true;
+    cookieStartIndex = cookie.indexOf(cookieName);
+    if(cookieStartIndex != -1) {
+      //get the session number
+      cookieStartIndex += cookieName.length();
+      cookieEndIndex = cookie.indexOf(";", cookieStartIndex);
+      sessionId = cookie.substring(cookieStartIndex, cookieEndIndex);
+      Serial.println("Session Id = " + sessionId);
+      
+      //retrieve the session object
+      sessionFound = retrieveSession(sessionId, session);
+      if(sessionFound){
+        Serial.println( session.sessionStatus == ACTIVE ? "Authentication Successful" : "Authentication Failed - Session Inactive");
+        return session.sessionStatus;
+      }else{
+        Serial.println("Session not found");
+        return false;
+      }
+      
     }
   }
   Serial.println("Authentication Failed");
@@ -110,7 +132,8 @@ void View::logout_handler(){
 }
 
 void View::list_users(String msg){
-  if(!is_authenticated()){
+  UserSession session;
+  if(!is_authenticated(session)){
     login_page("");
     return;
   }
@@ -136,7 +159,8 @@ void View::list_users(String msg){
 }
 
 void View::register_user_page(){
-  if(!is_authenticated()){
+  UserSession session;
+  if(!is_authenticated(session)){
     login_page("");
     return;
   }
@@ -154,7 +178,8 @@ void View::register_user_page(){
  * @modifies user registry - Saves user to the users file.
  */
 void View::register_user_handler(){
-  if(!is_authenticated()){
+  UserSession session;
+  if(!is_authenticated(session)){
     login_page("");
     return;
   }
@@ -186,7 +211,8 @@ void View::register_user_handler(){
 }
 
 void View::activate_user_handler(){
-  if(!is_authenticated()){
+  UserSession session;
+  if(!is_authenticated(session)){
     login_page("");
     return;
   }
@@ -205,7 +231,8 @@ void View::activate_user_handler(){
 }
 
 void View::deactivate_user_handler(){
-  if(!is_authenticated()){
+  UserSession session;
+  if(!is_authenticated(session)){
     login_page("");
     return;
   }
@@ -224,7 +251,8 @@ void View::deactivate_user_handler(){
 }
 
 void View::view_logs_handler(){
-  if(!is_authenticated()){
+  UserSession session;
+  if(!is_authenticated(session)){
     login_page("");
     return;
   }
@@ -234,7 +262,8 @@ void View::view_logs_handler(){
 }
 
 void View::open_door_handler(){
-  if(!is_authenticated()){
+  UserSession session;
+  if(!is_authenticated(session)){
     login_page("");
     return;
   }

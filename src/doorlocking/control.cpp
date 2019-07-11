@@ -151,8 +151,27 @@ bool createSession(User& user, UserSession& session){
   return true;
 }
 
-bool retrieveSession(UserSession& session){
-  return true;
+bool retrieveSession(String sessionIdParam, UserSession& session){
+  String sessionIdFile;
+  bool sessionFound = false;
+
+  File f = SPIFFS.open("/sessions.txt", "r");
+  String line, username;
+  User u;
+  while (f.available()) {
+    line = f.readStringUntil('\n');
+    Serial.println("line = " + line);
+    sessionIdFile = getValue(line, '|', 0);
+    if(sessionIdParam == sessionIdFile){
+      sessionFound = true;
+      session.sessionId = sessionIdFile;
+      session.username = getValue(line, '|', 1);
+      session.sessionStatus = static_cast<StatusEnum>(getValue(line, '|', 2).toInt());
+    }
+  }
+  f.close();
+  
+  return sessionFound;
 }
 
 bool invalidadeSessions(String username){

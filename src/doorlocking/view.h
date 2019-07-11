@@ -3,11 +3,12 @@
 
 #include <ESP8266WebServerSecure.h>
 #include "WString.h"
+#include "model.h"
 
 class View{
 	private:
 		ESP8266WebServerSecure* server;
-    bool is_authenticated();
+    bool is_authenticated(UserSession& session);
 	public:
 		View(ESP8266WebServerSecure* server);
 		void home();
