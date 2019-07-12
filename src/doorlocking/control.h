@@ -27,6 +27,8 @@ bool createSession(User& user, UserSession& session);
 
 bool retrieveSession(String sessionIdParam, UserSession& session);
 
+bool invalidadeSession(String sessionId);
+
 bool invalidadeSessions(String username);
 
 #endif

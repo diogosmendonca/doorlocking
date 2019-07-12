@@ -19,12 +19,21 @@ void View::home(){
 
 void View::menu(String msg){
   UserSession session;
+  User user;
+  
   if(!is_authenticated(session)){
     login_page("");
     return;
   }
   
-  menu_admin(msg);
+  user.username = session.username;
+  retrieveUser(user);
+  if(user.type == ADMIN){
+    menu_admin(msg);
+  }else{
+    menu_user(msg);
+  }
+  
 }
 
 void View::menu_user(String msg){
@@ -124,11 +133,22 @@ bool View::is_authenticated(UserSession& session) {
 }
 
 void View::logout_handler(){
-  //remove cookie
-  server->sendHeader("Cache-Control", "no-cache");
-  server->sendHeader("Set-Cookie", "__Secure-Session-ID=0; Secure; HttpOnly; SameSite=Strict; Max-Age=0;" );
+  UserSession session;
+  if(!is_authenticated(session)){
+    login_page("");
+    return;
+  }
   
-  login_page("");
+  //invalidate the actual session
+  if(invalidadeSession(session.sessionId)){
+    //remove cookie
+    server->sendHeader("Cache-Control", "no-cache");
+    server->sendHeader("Set-Cookie", "__Secure-Session-ID=0; Secure; HttpOnly; SameSite=Strict; Max-Age=0;" );
+    login_page("Logout Successful");  
+  }else{
+    menu("Unable to logout");
+  }
+  
 }
 
 void View::list_users(String msg){
@@ -243,6 +263,11 @@ void View::deactivate_user_handler(){
     username = server->arg("username");
     if(changeUserState(username, INACTIVE)){
       msg = "User deactivated with success!";
+      if(invalidadeSessions(username)){
+        msg += "User sessions invalidated.";
+      }else{
+        msg += "No session invalidated.";
+      }
     }else{
       msg = "An problem occurred during user deactivation.";
     }
@@ -267,5 +292,5 @@ void View::open_door_handler(){
     login_page("");
     return;
   }
-  
+  menu("Door Succefully Opened");
 }

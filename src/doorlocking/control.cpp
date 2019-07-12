@@ -160,7 +160,6 @@ bool retrieveSession(String sessionIdParam, UserSession& session){
   User u;
   while (f.available()) {
     line = f.readStringUntil('\n');
-    Serial.println("line = " + line);
     sessionIdFile = getValue(line, '|', 0);
     if(sessionIdParam == sessionIdFile){
       sessionFound = true;
@@ -174,6 +173,59 @@ bool retrieveSession(String sessionIdParam, UserSession& session){
   return sessionFound;
 }
 
+bool invalidadeSession(String sessionId){
+  String sessionFile = readFile("/sessions.txt");
+  File f;
+  bool fieldFound = false;
+  int fieldIndex;
+  
+  //find the session
+  int sessionIndex = sessionFile.indexOf(sessionId);
+  bool sessionFound = sessionIndex >= 0;
+  
+  if(sessionFound){
+    
+    //change its record
+    //positioning the cursos in status field
+    fieldIndex = sessionFile.indexOf('|', sessionFile.indexOf('|',sessionIndex)+1);
+    
+    if (fieldIndex > 0){
+      fieldFound = true;
+    
+      //set the state
+      sessionFile.setCharAt(fieldIndex + 1, '0');
+
+      //rewrite the whole file
+      f = SPIFFS.open("/sessions.txt", "w");
+      
+      //write the new state
+      f.print(sessionFile);
+      f.close();
+    }
+  }
+  
+  return sessionFound && fieldFound;
+}
+
+
 bool invalidadeSessions(String username){
-  return true;
+  String sessionFile = readFile("/sessions.txt");
+  File f;
+  bool sessionsFound = false;
+  int usernameIndex = 0;
+  usernameIndex = sessionFile.indexOf(username, usernameIndex);
+  while(usernameIndex >= 0){
+    sessionFile.setCharAt(usernameIndex + username.length() + 1, '0');
+    usernameIndex = sessionFile.indexOf(username, usernameIndex + 1);
+    sessionsFound = true;
+  }
+
+  //rewrite the whole file
+  f = SPIFFS.open("/sessions.txt", "w");
+  
+  //write the new state
+  f.print(sessionFile);
+  f.close();
+  
+  return sessionsFound;
 }
