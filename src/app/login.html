@@ -1,21 +1,74 @@
 <!DOCTYPE html>
 <html lang='en'>
 <head>
-    <title>Login</title>
-    <meta charset='UTF-8'>
+    <title>DoorLocking.App - Login</title>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- Bootstrap CSS -->
+    <!-- build:css css/main.css -->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-social/bootstrap-social.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- endbuild -->
 </head>
 <body>
-    <h1>Login</h1>
-    <h3>##MSG##</h3>
-    <form name='login' action='/login_handler' method='POST'>
-        <fieldset>
-            <legend>Authentication</legend>
-            <label for='username'>Username:</label><br/>
-            <input type='text' name='username' id='username' maxlength='30' size='30'/><br/>
-            <label for='accessCode'>Acess Code:</label><br/>
-            <input type='text' name='accessCode' id='accessCode' maxlength='30' size='30'/><br/><br/>
-            <input type='submit' value='Enter'>
-        </fieldset>
-    </form>
+    <nav class="navbar navbar-dark navbar-expand-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand mr-auto" href="#">DoorLocking.App</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div class="col-12 col-md-9">
+            <br>
+            <div class="alert alert-danger" role="alert">
+                ##MSG##
+            </div>
+            <form name='login' action='/login_handler' method='POST'>
+                <fieldset>
+                    <legend>Authentication</legend>
+                    <div class="form-group row">
+                        <label for='username' class="col-md-2 col-form-label">Username:</label>
+                        <div class="col-md-10">
+                            <input type='text' class="form-control" name='username' id='username' maxlength='30' size='30'/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for='accessCode' class="col-md-2 col-form-label">Acess Code:</label>
+                        <div class="col-md-10">
+                            <input type='password' class="form-control" name='accessCode' id='accessCode' maxlength='30' size='30'/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-md-2 col-md-10">
+                            <button type="submit" class="btn btn-success">Enter</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="row justify-content-center">             
+                <div class="col-auto">
+                    <p>© Copyright 2019 DoorLocking.App</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <!-- build:js js/main.js -->
+    <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+    <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <!-- endbuild -->
 </body>
 </html>
