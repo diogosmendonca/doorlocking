@@ -1,21 +1,92 @@
 <!DOCTYPE html>
 <html lang='en'>
 <head>
-    <title>List of Users</title>
-    <meta charset='UTF-8'>
+    <title>DoorLocking.App - List of Users</title>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- Bootstrap CSS -->
+    <!-- build:css css/main.css -->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-social/bootstrap-social.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- endbuild -->
 </head>
 <body>
-    <h1>List of Users</h1>
-    <h3>##MSG##</h3>
-    <table border='1'>
-        <tr >
-            <td>Username</td>
-            <td>Status</td>
-            <td>Change Status</td>
-        </tr>
-        ##USERS##        
-    </table>
-    <br/>
-    <input type='button' value='Back' onclick="javascript:location.href='/menu'">
+    <nav class="navbar navbar-dark navbar-expand-sm fixed-top">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>&nbsp;&nbsp;
+            <a class="navbar-brand mr-auto" href="#">DoorLocking.App</a>
+            <div class="collapse navbar-collapse" id="Navbar">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="/opendoor"><i class="fas fa-door-open"></i> Open Door</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/register_user"><i class="fas fa-user-plus"></i> New User</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/list_users"><i class="fas fa-user-edit"></i> List/Change Users</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="/logout_handler"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-12 col-md-9">
+            <br>
+            <div class="alert alert-success" role="alert">
+                ##MSG##
+            </div>
+            <h4>List of Users</h4>
+            <table class="table table-sm table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Username</th>
+                        <th>Status</th>
+                        <th>Change Status</th>
+                    </tr>
+                </thead>
+                ##USERS##        
+                <tbody>
+                    <tr>
+                        <td>diogomendonca</td>
+                        <td><span class="badge badge-pill badge-success">Active</span></td>
+                        <td><button class="btn btn-danger">Deactivate</button></td>
+                    </tr>
+                    <tr>
+                        <td>Diogo</td>
+                        <td><span class="badge badge-pill badge-success">Active</span></td>
+                        <td><button class="btn btn-danger">Deactivate</button></td>
+                    </tr>
+                    <tr>
+                        <td>Other User</td>
+                        <td><span class="badge badge-pill badge-danger">Inactive</span></td>
+                        <td><button class="btn btn-success">Activate</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br/>
+            <button type='button' class="btn btn-secondary" onclick="javascript:location.href='/menu'">Back</button>
+            <br><br>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="row justify-content-center">             
+                <div class="col-auto">
+                    <p>© Copyright 2019 DoorLocking.App</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <!-- build:js js/main.js -->
+    <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+    <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <!-- endbuild -->
 </body>
 </html>

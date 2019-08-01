@@ -1,21 +1,70 @@
 <!DOCTYPE html>
 <html lang='en'>
 <head>
-    <title>Menu</title>
-    <meta charset='UTF-8'>
+    <title>DoorLocking.App - Menu</title>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- Bootstrap CSS -->
+    <!-- build:css css/main.css -->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-social/bootstrap-social.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- endbuild -->
 </head>
 <body>
-    <h1>Menu</h1>
-    <h3>##MSG##</h3>
-    <form name='login' action='/open_door' method='POST'>
-        <input type='hidden' name='username' value=''>
-        <input type='submit' name='open' value='Open Door'>
-    </form>
-    <ul>
-        <li><a href='/register_user'>Register New User</a></li>
-        <li><a href='/list_users'>List/Activate/Deactivate Users</a></li>
-        <li><a href='/view_logs'>View Logs</a></li>
-        <li><a href='/logout_handler'>Logout</a></li>
-    </ul>
+    <nav class="navbar navbar-dark navbar-expand-sm fixed-top">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>&nbsp;&nbsp;
+            <a class="navbar-brand mr-auto" href="#">DoorLocking.App</a>
+            <div class="collapse navbar-collapse" id="Navbar">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="/opendoor"><i class="fas fa-door-open"></i> Open Door</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/register_user"><i class="fas fa-user-plus"></i> New User</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/list_users"><i class="fas fa-user-edit"></i> List/Change Users</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="/logout_handler"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-12 col-md-9">
+            <br>
+            <div class="alert alert-danger" role="alert">
+                ##MSG##
+            </div>
+            <h4>Menu</h4>
+            <div class="list-group ">
+                <a class="list-group-item list-group-item-success" href='/open_door'><i class="fas fa-door-open"></i> Open Door</a>
+                <a class="list-group-item list-group-item-success" href='/register_user'><i class="fas fa-user-plus"></i> New User</a>
+                <a class="list-group-item list-group-item-success" href='/list_users'><i class="fas fa-user-edit"></i> List/Change Users</a>
+                <a class="list-group-item list-group-item-success" href='/logout_handler'><i class="fas fa-sign-out-alt"></i> Logout</a></a>
+            </div>
+            <br>
+            <br>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="row justify-content-center">             
+                <div class="col-auto">
+                    <p>© Copyright 2019 DoorLocking.App</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <!-- build:js js/main.js -->
+    <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+    <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <!-- endbuild -->
 </body>
 </html>
