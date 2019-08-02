@@ -1,0 +1,43 @@
+$base-background-color: darkgreen;
+$base-text-color: #ddd;
+
+.row-header {
+    margin: 0px auto;
+    padding: 0px 0px; 
+}
+  
+.row-content {
+    margin: 0px auto;
+    padding: 50px 0px;
+    border-bottom: 1px ridge;
+    min-height: 400px; 
+}
+  
+.footer {
+    background-color: $base-background-color;
+    color: $base-text-color;
+    margin: 0px auto;
+    padding: 20px 0px; 
+}
+
+body {
+    padding: 50px 0px 0px 0px;
+    z-index: 0; 
+}
+
+
+.navbar-dark {
+    background-color: $base-background-color; 
+}
+
+.tab-content {
+    border-left: 1px solid $base-text-color;
+    border-right: 1px solid $base-text-color;
+    border-bottom: 1px solid $base-text-color;
+    padding: 10px; 
+}
+
+img {
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+  }

@@ -1,36 +1,33 @@
 .row-header {
-    margin: 0px auto;
-    padding: 0px 0px; 
-}
-  
+  margin: 0px auto;
+  padding: 0px 0px; }
+
 .row-content {
-    margin: 0px auto;
-    padding: 50px 0px;
-    border-bottom: 1px ridge;
-    min-height: 400px; 
-}
-  
+  margin: 0px auto;
+  padding: 50px 0px;
+  border-bottom: 1px ridge;
+  min-height: 400px; }
+
 .footer {
-    background-color: darkgreen;
-    color: #ddd;
-    margin: 0px auto;
-    padding: 20px 0px; 
-}
+  background-color: darkgreen;
+  color: #ddd;
+  margin: 0px auto;
+  padding: 20px 0px; }
 
 body {
-    padding: 50px 0px 0px 0px;
-    z-index: 0; 
-}
-
+  padding: 50px 0px 0px 0px;
+  z-index: 0; }
 
 .navbar-dark {
-    background-color: darkgreen; 
-}
+  background-color: darkgreen; }
 
 .tab-content {
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    padding: 10px; 
-}
-  
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 10px; }
+
+img {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  /* For IE8 and earlier */ }

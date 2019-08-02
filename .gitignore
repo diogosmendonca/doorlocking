@@ -5,6 +5,8 @@
 *.win
 /src/app/node_modules
 /src/app/.vscode
+/src/app/package-lock.json
+/src/app/dist
 /src/doorlocking/data
 /src/doorlocking/.vscode
 
