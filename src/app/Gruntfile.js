@@ -50,7 +50,7 @@ module.exports = function(grunt){
                     expand: true,
                     dot: true,
                     cwd: 'node_modules/@fortawesome/fontawesome-free',
-                    src: ['webfonts/*.woff'],
+                    src: ['webfonts/fa-solid-900.woff'],
                     dest: 'dist'
                 }]
             }

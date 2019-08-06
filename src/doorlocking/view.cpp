@@ -3,6 +3,7 @@
 #include <climits>
 #include <vector>
 
+
 View::View(ESP8266WebServerSecure* server){
 	this->server = server;	
 }
@@ -293,4 +294,41 @@ void View::open_door_handler(){
     return;
   }
   menu("Door Succefully Opened");
+}
+
+void View::large_file_handler(String fileName, String contentType, bool gziped){
+  File f = SPIFFS.open(fileName,"r");
+  int fileSize = f.size();
+  
+  String headers  = "HTTP/1.1 200 OK\r\n" 
+                    "Content-Type: " + contentType +  "\r\n"
+                    "Cache-Control: public, max-age=31536000, immutable\r\n" 
+                    "Content-length: "  + fileSize +  "\r\n";
+  if(gziped){
+    headers += "Content-Encoding: gzip\r\n";
+  }
+  headers += "\r\n";
+  Serial.println(headers);
+  server->sendContent(headers);
+  
+  int chunkSize = 1024;
+  char buf[chunkSize];
+  int numberOfChunks = (fileSize / chunkSize) + 1;
+  
+  int count = 0;
+  int remainingChunks = fileSize;
+  int bytesSent = 0;
+  for (int i = 1; i <= numberOfChunks; i++){
+    Serial.println(i);
+    if (remainingChunks - chunkSize < 0){
+      chunkSize = remainingChunks;
+    }
+    f.read((uint8_t *)buf, chunkSize);
+    remainingChunks = remainingChunks - chunkSize;
+    server->sendContent_P(buf, chunkSize);
+    bytesSent += chunkSize;
+  }
+  Serial.println("bytes sent:" + String(bytesSent));
+  f.close();
+  
 }

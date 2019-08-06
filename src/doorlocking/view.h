@@ -25,6 +25,7 @@ class View{
     void deactivate_user_handler();
     void view_logs_handler();
     void open_door_handler();
+    void large_file_handler(String fileName, String contentType, bool gziped);    
 };
 
 

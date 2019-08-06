@@ -4,7 +4,7 @@
 #include <FS.h>
 #include "view.h"
 
-const char* ssid = "DOOR-NETWORK";
+const char* ssid = "DOOR-NETWORK 3";
 const char* password = "";
 const byte DNS_PORT = 53;
 BearSSL::ESP8266WebServerSecure server(443);
@@ -53,11 +53,17 @@ void setup(void){
  server.on("/view_logs", [](){view.view_logs_handler();});
  server.on("/open_door", [](){view.open_door_handler();});
 
-  //here the list of headers to be recorded
-  const char * headerkeys[] = {"User-Agent", "Cookie"} ;
-  size_t headerkeyssize = sizeof(headerkeys) / sizeof(char*);
-  //ask server to track these headers
-  server.collectHeaders(headerkeys, headerkeyssize);
+ //serve static files
+ server.on("/css/main.d251a307bc6092ff3709.css", [](){view.large_file_handler("/main.css.gz", "text/css", true);});
+ server.on("/js/main.8a2ee33b328d4d2d59cf.js", [](){view.large_file_handler("/main.js.gz", "application/javascript", true);});
+ server.on("/webfonts/fa-solid-900.woff", [](){view.large_file_handler("/fa-solid-900.woff", "font/woff", false);});
+
+
+ //here the list of headers to be recorded
+ const char * headerkeys[] = {"User-Agent", "Cookie"} ;
+ size_t headerkeyssize = sizeof(headerkeys) / sizeof(char*);
+ //ask server to track these headers
+ server.collectHeaders(headerkeys, headerkeyssize);
  
  server.begin();
  Serial.println("HTTPS server started");
