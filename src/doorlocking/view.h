@@ -5,9 +5,12 @@
 #include "WString.h"
 #include "model.h"
 
+#define DOOR_PIN 13
+
 class View{
 	private:
 		ESP8266WebServerSecure* server;
+    bool is_response_started = false;
     bool is_authenticated(UserSession& session);
 	public:
 		View(ESP8266WebServerSecure* server);
@@ -26,6 +29,7 @@ class View{
     void view_logs_handler();
     void open_door_handler();
     void large_file_handler(String fileName, String contentType, bool gziped);    
+    void sendVariable(String variable, String content);
 };
 
 

@@ -10,8 +10,7 @@ module.exports = function(grunt){
         sass: {
             dist: {
                 files: {
-                    'css/styles.css': 'css/styles.scss',
-                    'css/side-menu.css': 'css/side-menu.scss',
+                    'css/styles.css': 'css/styles.scss'
                 }
             }
         },
@@ -45,7 +44,7 @@ module.exports = function(grunt){
                     src: ['*.html'],
                     dest: 'dist'
                 }]
-            },
+            }/*,
             fonts: {
                 files: [{
                     expand: true,
@@ -54,7 +53,7 @@ module.exports = function(grunt){
                     src: ['webfonts/fa-solid-900.woff'],
                     dest: 'dist'
                 }]
-            }
+            }*/
         },
         clean: {
             build: {

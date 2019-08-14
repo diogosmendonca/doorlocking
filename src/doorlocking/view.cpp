@@ -38,21 +38,24 @@ void View::menu(String msg){
 }
 
 void View::menu_user(String msg){
-  String menuPage = readFile("/menu_user.html");
-  menuPage.replace("##MSG##", msg);
-  server->send(200, "text/html", menuPage);
+  large_file_handler("/menu_user.html", "text/html", false);
+  if(msg != NULL && msg != ""){
+    sendVariable("msg", msg);
+  }
 }
 
 void View::menu_admin(String msg){
-  String menuPage = readFile("/menu_admin.html");
-  menuPage.replace("##MSG##", msg);
-  server->send(200, "text/html", menuPage);
+  large_file_handler("/menu_admin.html", "text/html", false);
+  if(msg != NULL && msg != ""){
+    sendVariable("msg", msg);
+  }
 }
 
 void View::login_page(String msg){
-  String loginPage = readFile("/login.html");
-  loginPage.replace("##MSG##", msg);
-  server->send(200, "text/html", loginPage);
+  large_file_handler("/login.html", "text/html", false);
+  if(msg != NULL && msg != ""){
+    sendVariable("msg", msg);
+  }
 }
 
 void View::login_handler(){
@@ -69,18 +72,21 @@ void View::login_handler(){
       
       //set a cookie in the header
       if(isSessionCreated){
-        server->sendHeader("Cache-Control", "no-cache");
-        server->sendHeader("Set-Cookie", "__Secure-Session-ID=" + session.sessionId + "; Secure; HttpOnly; SameSite=Strict; Max-Age=2147483647;");
+        String headers  = "HTTP/1.1 200 OK\r\n" 
+                          "Cache-Control: no-cache;\r\n"
+                          "Set-Cookie: __Secure-Session-ID=" + session.sessionId + "; Secure; HttpOnly; SameSite=Strict; Max-Age=2147483647;\r\n";
+        server->sendContent(headers);
+        this->is_response_started = true;
         
         //redirect to menu page
         if(u.type == ADMIN){
-          menu_admin("Welcome " + u.username);
+          menu_admin("<div class='alert alert-success' role='alert'>Welcome " + u.username + "</div>");
         }else{
-          menu_user("Welcome " + u.username);
+          menu_user("<div class='alert alert-success' role='alert'>Welcome " + u.username + "</div>");
         }
       }else{
         //redirect to login page, failed to create cookie.
-        login_page("Authentication Failed");
+        login_page("<div class='alert alert-danger' role='alert'>Authentication Failed</div>");
       }
     }else{
       //authentication fail
@@ -88,11 +94,11 @@ void View::login_handler(){
       //increment the fail counter for the user
 
       //redirect to login page
-      login_page("Authentication Failed");
+      login_page("<div class='alert alert-danger' role='alert'>Authentication Failed</div>");
     }
   }else{
     //redirect to login page, missing field in form
-    login_page("Authentication Failed");
+    login_page("<div class='alert alert-danger' role='alert'>Authentication Failed</div>");
   }
   
 }
@@ -143,11 +149,15 @@ void View::logout_handler(){
   //invalidate the actual session
   if(invalidadeSession(session.sessionId)){
     //remove cookie
-    server->sendHeader("Cache-Control", "no-cache");
-    server->sendHeader("Set-Cookie", "__Secure-Session-ID=0; Secure; HttpOnly; SameSite=Strict; Max-Age=0;" );
-    login_page("Logout Successful");  
+    String headers  = "HTTP/1.1 200 OK\r\n" 
+                          "Cache-Control: no-cache;\r\n"
+                          "Set-Cookie: __Secure-Session-ID=0; Secure; HttpOnly; SameSite=Strict; Max-Age=0;\r\n";
+    server->sendContent(headers);
+    this->is_response_started = true;
+    
+    login_page("<div class='alert alert-success' role='alert'>Logout Successful</div>");  
   }else{
-    menu("Unable to logout");
+    menu("<div class='alert alert-danger' role='alert'>Unable to logout</div>");
   }
   
 }
@@ -165,18 +175,23 @@ void View::list_users(String msg){
 
   for(int i = 0; i < users.size(); i++){
     strUsersList += "<tr><td>" + users[i].username + "</td><td>"; 
-    strUsersList += (users[i].userStatus == ACTIVE ? "Active" : "Inactive"); 
-    strUsersList += "</td><td><a href='"; 
-    strUsersList += (users[i].userStatus == INACTIVE ? "/activate_user_handler?username=" + users[i].username 
-                                         : "/deactivate_user_handler?username=" + users[i].username);
-    strUsersList += "'>";
+    strUsersList += (users[i].userStatus == ACTIVE ? "<span class='badge badge-pill badge-success'>Active</span>" : "<span class='badge badge-pill badge-danger'>Inactive</span>"); 
+    strUsersList += "</td><td>"; 
+    strUsersList += (users[i].userStatus == INACTIVE ? "<button class='btn btn-success' onclick='location.href=\'/activate_user_handler?username=" + users[i].username + ""
+                                         : "<button class='btn btn-danger' onclick='location.href=\'/deactivate_user_handler?username=" + users[i].username);
+    strUsersList += "\''>";
     strUsersList += (users[i].userStatus == INACTIVE ? "Activate" : "Deactivate");
-    strUsersList += "</a></td></tr>";
+    strUsersList += "</button></td></tr>";
   }
-  String listUsersPage = readFile("/list_users.html");
-  listUsersPage.replace("##USERS##", strUsersList);
-  listUsersPage.replace("##MSG##", msg);
-  server->send(200, "text/html", listUsersPage);
+
+  large_file_handler("/list_users.html", "text/html", false);
+  if(msg != NULL && msg != ""){
+    sendVariable("msg", msg);
+  }
+  if(strUsersList != NULL && strUsersList != ""){
+    sendVariable("users", strUsersList);
+  }
+  
 }
 
 void View::register_user_page(){
@@ -185,10 +200,7 @@ void View::register_user_page(){
     login_page("");
     return;
   }
-  
-  String page = readFile("/register_user.html");
-  page.replace("##MSG##", "");
-  server->send(200, "text/html", page);
+  large_file_handler("/register_user.html", "text/html", false);
 }
 
 /**
@@ -216,19 +228,21 @@ void View::register_user_handler(){
     getUsers(users);
     if(!usernameExists(username, users)){
       accessCode = registerUser(username);
-      msg = "User registred with sucess! Access Code: " + accessCode;
+      msg = "<div class='alert alert-success' role='alert'>User registred with sucess! Access Code: " + accessCode + "</div>";
       redirectPage = "/menu_admin.html";
     }else{
-      msg = "Username already exists, chose other username.";
+      msg = "<div class='alert alert-danger' role='alert'>Username already exists, chose other username.</div>";
       redirectPage = "/register_user.html";
     }
   }else{
-    msg = "Inform a non blank username.";
+    msg = "<div class='alert alert-danger' role='alert'>Inform a non blank username.</div>";
     redirectPage = "/register_user.html";
   }
-  String page = readFile(redirectPage);
-  page.replace("##MSG##", msg);
-  server->send(200, "text/html", page);
+
+  large_file_handler(redirectPage, "text/html", false);
+  if(msg != NULL && msg != ""){
+    sendVariable("msg", msg);
+  }
 }
 
 void View::activate_user_handler(){
@@ -243,9 +257,9 @@ void View::activate_user_handler(){
   if(server->hasArg("username")){
     username = server->arg("username");
     if(changeUserState(username, ACTIVE)){
-      msg = "User activated with success!";
+      msg = "<div class='alert alert-success' role='alert'>User activated with success!</div>";
     }else{
-      msg = "An problem occurred during user activation.";
+      msg = "<div class='alert alert-danger' role='alert'>An problem occurred during user activation.</div>";
     }
   }
   this->list_users(msg);
@@ -263,14 +277,14 @@ void View::deactivate_user_handler(){
   if(server->hasArg("username")){
     username = server->arg("username");
     if(changeUserState(username, INACTIVE)){
-      msg = "User deactivated with success!";
+      msg = "<div class='alert alert-success' role='alert'>User deactivated with success!</div>";
       if(invalidadeSessions(username)){
         msg += "User sessions invalidated.";
       }else{
         msg += "No session invalidated.";
       }
     }else{
-      msg = "An problem occurred during user deactivation.";
+      msg = "<div class='alert alert-danger' role='alert'>An problem occurred during user deactivation.</div>";
     }
   }
   this->list_users(msg);
@@ -293,17 +307,31 @@ void View::open_door_handler(){
     login_page("");
     return;
   }
-  menu("Door Succefully Opened");
+  
+  digitalWrite(DOOR_PIN, LOW);
+  delay(500);
+  digitalWrite(DOOR_PIN, HIGH);
+  
+  menu("<div class='alert alert-success' role='alert'>Door Succefully Opened</div>");
 }
 
 void View::large_file_handler(String fileName, String contentType, bool gziped){
+  if(gziped){
+    fileName += ".gz";
+  }
   File f = SPIFFS.open(fileName,"r");
   int fileSize = f.size();
   
-  String headers  = "HTTP/1.1 200 OK\r\n" 
-                    "Content-Type: " + contentType +  "\r\n"
-                    "Cache-Control: public, max-age=31536000, immutable\r\n" 
-                    "Content-length: "  + fileSize +  "\r\n";
+  String headers  = "";
+  if(!this->is_response_started){
+    headers  += "HTTP/1.1 200 OK\r\n";
+  }else{
+    this->is_response_started = false;
+  }
+
+  headers += "Content-Type: " + contentType +  "\r\n"; 
+            //"Cache-Control: public, max-age=31536000, immutable\r\n" 
+            //"Content-length: "  + fileSize +  "\r\n";
   if(gziped){
     headers += "Content-Encoding: gzip\r\n";
   }
@@ -331,4 +359,16 @@ void View::large_file_handler(String fileName, String contentType, bool gziped){
   Serial.println("bytes sent:" + String(bytesSent));
   f.close();
   
+}
+
+void View::sendVariable(String variable, String content){
+  String script = "<script language=\"javascript\">"
+                    "$( document ).ready(function() {"
+                      "$(\"#variableName\").html(\"content\");"
+                    "});"
+                  "</script>";
+  script.replace("variableName", variable);
+  script.replace("content", content);
+  Serial.println(script);
+  server->sendContent(script);
 }
