@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Network Configuration</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+    <h1>Network Configuration</h1>
+    <h3>Thank for using DoorLocking.App! Fill the form bellow to make your device available on your WiFi network.</h3>
+    <h4 id="msg"></h4>
+    <form name="config_form" method="POST" action="/config_handler">
+        <table>
+            <tr>
+                <td align="right"><label for="hostname">Door Name:</label>&nbsp;</td>
+                <td><input type="text" id="hostname" name="hostname"></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="ssid">WiFi Network Name (SSID):</label></td>
+                <td><input type="text" id="ssid" name="ssid"></td>
+            </tr>
+            <tr>
+                <td align="right"><label for="pwd">WiFi Password:</label></td>
+                <td><input type="text" id="pwd" name="pwd"></td>
+            </tr>
+            <tr>
+                <td align="right" colspan="2"><br><button type="submit" value="Send">Send</button></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+<!--
+    Adding text to the file be more than one KB. 
+-->
