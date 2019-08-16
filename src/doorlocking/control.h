@@ -31,4 +31,8 @@ bool invalidadeSession(String sessionId);
 
 bool invalidadeSessions(String username);
 
+void getNetworkConfig(String filename, NetworkConfig& config);
+
+void setNetworkConfig(String filename, NetworkConfig& config);
+
 #endif

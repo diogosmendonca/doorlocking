@@ -11,7 +11,7 @@ String getValue(String data, char separator, int index){
     if (data.charAt(i) == separator || i == maxIndex) {
       found++;
       strIndex[0] = strIndex[1] + 1;
-      strIndex[1] = (i == maxIndex) ? i+1 : i;
+      strIndex[1] = i;
     }
   }
   return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
@@ -228,4 +228,34 @@ bool invalidadeSessions(String username){
   f.close();
   
   return sessionsFound;
+}
+
+
+void getNetworkConfig(String filename, NetworkConfig& config){
+  File f = SPIFFS.open(filename, "r");
+  String line;
+  
+  line = f.readStringUntil('\n');
+  config.hostname = getValue(line, '=', 1);
+  line = f.readStringUntil('\n');
+  config.ssid = getValue(line, '=', 1);
+  line = f.readStringUntil('\n');
+  config.pwd = getValue(line, '=', 1);
+  
+  f.close();
+}
+
+
+void setNetworkConfig(String filename, NetworkConfig& config){
+  File f = SPIFFS.open(filename, "w");
+  String line;
+  
+  line = "hostname=" + config.hostname;
+  f.println(line);
+  line = "ssid=" + config.ssid;
+  f.println(line);
+  line = "pwd=" + config.pwd;
+  f.println(line);
+  
+  f.close();
 }

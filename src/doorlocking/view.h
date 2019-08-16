@@ -30,6 +30,8 @@ class View{
     void open_door_handler();
     void large_file_handler(String fileName, String contentType, bool gziped);    
     void sendVariable(String variable, String content);
+    void config();
+    void config_handler();
 };
 
 

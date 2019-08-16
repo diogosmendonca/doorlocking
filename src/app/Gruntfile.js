@@ -74,7 +74,7 @@ module.exports = function(grunt){
         useminPrepare: {
             foo: {
                 dest: 'dist',
-                src: ['list_users.html','login.html','menu_admin.html', 'menu_user.html', 'register_user.html']
+                src: ['list_users.html','login.html','menu_admin.html', 'menu_user.html', 'register_user.html', 'config.html']
             },
             options: {
                 flow: {
@@ -124,7 +124,7 @@ module.exports = function(grunt){
             }
         },
         usemin: {
-            html: ['dist/list_users.html','dist/login.html','dist/menu_admin.html', 'dist/menu_user.html', 'dist/register_user.html'],
+            html: ['dist/list_users.html','dist/login.html','dist/menu_admin.html', 'dist/menu_user.html', 'dist/register_user.html', 'dist/config.html'],
             options: {
                 assetsDirs: ['dist', 'dist/css', 'dist/js']
             }
@@ -139,7 +139,8 @@ module.exports = function(grunt){
                     'dist/login.html': 'dist/login.html',
                     'dist/menu_admin.html': 'dist/menu_admin.html',
                     'dist/menu_user.html': 'dist/menu_user.html',
-                    'dist/register_user.html': 'dist/register_user.html'
+                    'dist/register_user.html': 'dist/register_user.html',
+                    'dist/config.html': 'dist/config.html'
                 }
             }
         }

@@ -34,4 +34,12 @@ struct session{
 
 typedef struct session UserSession;
 
+struct network{
+  String hostname;
+  String ssid;
+  String pwd;
+};
+
+typedef struct network NetworkConfig;
+
 #endif

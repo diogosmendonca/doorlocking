@@ -372,3 +372,27 @@ void View::sendVariable(String variable, String content){
   Serial.println(script);
   server->sendContent(script);
 }
+
+void View::config(){
+  Serial.print("Config");
+  String configHtml = readFile("/config.html");
+  server->send(200, "text/html", configHtml);
+  //large_file_handler("/config.html", "text/html", false);
+}
+
+void View::config_handler(){
+  NetworkConfig config;
+  if(server->hasArg("hostname") && server->hasArg("ssid") && server->hasArg("pwd")){
+    config.hostname = server->arg("hostname");
+    config.ssid = server->arg("ssid");
+    config.pwd = server->arg("pwd");
+    
+    setNetworkConfig("/network.txt", config);
+    large_file_handler("/config.html", "text/html", false);
+    sendVariable("msg", "Config saved successfully! Reset your device to apply the new network configuration and access <a href='https://" + config.hostname + "'>https://" + config.hostname + "</a>");
+  }else{
+    large_file_handler("/config.html", "text/html", false);
+    sendVariable("msg", "There are errors in your configuration. Fill all fields.");
+  }
+
+}
