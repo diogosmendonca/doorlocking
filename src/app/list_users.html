@@ -5,65 +5,83 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- build:css css/main.css -->
-    <link rel="stylesheet" href="css/styles.css">
-    <!-- endbuild -->
+     <!-- build:css css/main.css -->
+     <link rel="stylesheet" href="node_modules/purecss/build/pure-min.css">
+     <link rel="stylesheet" href="node_modules/purecss/build/grids-responsive-min.css">
+     <link rel="stylesheet" href="css/styles.css">
+     <!-- endbuild -->
 </head>
 <body>
-    <nav class="navbar navbar-dark navbar-expand-sm fixed-top">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>&nbsp;&nbsp;
-            <a class="navbar-brand mr-auto" href="#">DoorLocking.App</a>
-            <div class="collapse navbar-collapse" id="Navbar">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href="/opendoor"><i class="fas fa-door-open"></i> Open Door</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/register_user"><i class="fas fa-user-plus"></i> New User</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/list_users"><i class="fas fa-user-edit"></i> List/Change Users</a></li>
-                    <li class="nav-item active"><a class="nav-link" href="/logout_handler"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    
+    <div id="layout">
+        <!-- Menu toggle -->
+        <a href="#menu" id="menuLink" class="menu-link">
+            <!-- Hamburger icon -->
+            <span></span>
+        </a>
+    
+        <div id="menu">
+            <div class="pure-menu">
+                <a class="pure-menu-heading" href="#">DoorLocking.App</a>
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item"><a href='/open_door' class="pure-menu-link">Open Door</a></li>
+                    <li class="pure-menu-item"><a href='/register_user' class="pure-menu-link">New User</a></li>
+                    <li class="pure-menu-item"><a href='/list_users' class="pure-menu-link">List/Change Users</a></li>
+                    <li class="pure-menu-item"><a href='/logout_handler' class="pure-menu-link">Logout</a></li>
                 </ul>
             </div>
         </div>
-    </nav>
-    <div class="container">
-        <div class="col-12 col-md-9">
-            <br>
-            <div id="msg"></div>
-            <h4>List of Users</h4>
-            <table class="table table-sm table-striped">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Username</th>
-                        <th>Status</th>
-                        <th>Change Status</th>
-                    </tr>
-                </thead>
-                <tbody id="users">
-                </tbody>
-            </table>
-            <br/>
-            <button type='button' class="btn btn-secondary" onclick="javascript:location.href='/menu'">Back</button>
-            <br><br>
-        </div>
-    </div>
-    <footer class="footer">
-        <div class="container">
-            <div class="row justify-content-center">             
-                <div class="col-auto">
-                    <p>© Copyright 2019 DoorLocking.App</p>
+    
+        <div id="main">
+            <div class="header">
+                <h1>List of User</h1>
+                <h2>Click to change user status</h2>
+                <h4 id="msg"></h4>
+            </div>
+    
+            <div class="content">
+                <br>
+                <table class="pure-table">
+                    <thead>
+                        <tr valign="middle">
+                            <th>Username</th>
+                            <th>Status/Change</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users">
+                    </tbody>
+                </table>
+                <br/>
+                <button type='button' class="pure-button pure-button-secondary" onclick="javascript:location.href='/menu'">Back</button>
+                <br><br>
+            </div>
+
+            <div class="footer">
+                <div class="legal pure-g">
+                    <div class="pure-u-1 pure-u-sm-1-2">
+                        <p class="legal-license">
+                            DoorLocking.App v1.0.0<br>
+                            This is free software under <a href="https://www.gnu.org/licenses/lgpl-3.0.pt-br.html">LGPL v3 license</a>.
+                        </p>
+                    </div>
+                
+                    <div class="pure-u-1 pure-u-sm-1-2">
+                        <ul class="legal-links">
+                            <li><a href="https://github.com/diogosmendonca/doorlocking">GitHub Project</a></li>
+                            <li><a href="mailto:diogosmendonca@gmail.com">Contact Us</a></li>
+                        </ul>
+                
+                        <p class="legal-copyright">
+                            © Copyright 2019 DoorLocking.App.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
-    
-    <script src="https://kit.fontawesome.com/7ac5f3aac2.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <!-- build:js js/main.js -->
-    <script src="js/scripts.js"></script>
-    <!-- endbuild -->
+    </div>
+
+<!-- build:js js/main.js -->
+<script src="js/ui.js"></script>
+<!-- endbuild -->
 </body>
 </html>

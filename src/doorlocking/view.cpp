@@ -175,12 +175,10 @@ void View::list_users(String msg){
 
   for(int i = 0; i < users.size(); i++){
     strUsersList += "<tr><td>" + users[i].username + "</td><td>"; 
-    strUsersList += (users[i].userStatus == ACTIVE ? "<span class='badge badge-pill badge-success'>Active</span>" : "<span class='badge badge-pill badge-danger'>Inactive</span>"); 
-    strUsersList += "</td><td>"; 
-    strUsersList += (users[i].userStatus == INACTIVE ? "<button class='btn btn-success' onclick='location.href=\'/activate_user_handler?username=" + users[i].username + ""
-                                         : "<button class='btn btn-danger' onclick='location.href=\'/deactivate_user_handler?username=" + users[i].username);
+    strUsersList += (users[i].userStatus == INACTIVE ? "<button class='button-error pure-button' onclick='location.href=\'/activate_user_handler?username=" + users[i].username + ""
+                                         : "<button class='button-success pure-button' onclick='location.href=\'/deactivate_user_handler?username=" + users[i].username);
     strUsersList += "\''>";
-    strUsersList += (users[i].userStatus == INACTIVE ? "Activate" : "Deactivate");
+    strUsersList += (users[i].userStatus == INACTIVE ? "Inactive" : "Active");
     strUsersList += "</button></td></tr>";
   }
 
@@ -330,10 +328,11 @@ void View::large_file_handler(String fileName, String contentType, bool gziped){
   }
 
   headers += "Content-Type: " + contentType +  "\r\n"; 
-            //"Cache-Control: public, max-age=31536000, immutable\r\n" 
-            //"Content-length: "  + fileSize +  "\r\n";
+
   if(gziped){
     headers += "Content-Encoding: gzip\r\n";
+    headers += "Cache-Control: public, max-age=31536000, immutable\r\n";
+    headers += "Content-length: " + String(fileSize) + "\r\n";
   }
   headers += "\r\n";
   Serial.println(headers);
@@ -363,9 +362,7 @@ void View::large_file_handler(String fileName, String contentType, bool gziped){
 
 void View::sendVariable(String variable, String content){
   String script = "<script language=\"javascript\">"
-                    "$( document ).ready(function() {"
-                      "$(\"#variableName\").html(\"content\");"
-                    "});"
+                    "document.getElementById('variableName').innerHTML=\"content\";"
                   "</script>";
   script.replace("variableName", variable);
   script.replace("content", content);
@@ -373,11 +370,11 @@ void View::sendVariable(String variable, String content){
   server->sendContent(script);
 }
 
-void View::config(){
-  Serial.print("Config");
-  String configHtml = readFile("/config.html");
-  server->send(200, "text/html", configHtml);
-  //large_file_handler("/config.html", "text/html", false);
+void View::config_render(){
+  Serial.print("Config Render");
+  //String configHtml = readFile("/config.html");
+  //server->send(200, "text/html", configHtml);
+  large_file_handler("/config.html", "text/html", false);
 }
 
 void View::config_handler(){
@@ -389,7 +386,9 @@ void View::config_handler(){
     
     setNetworkConfig("/network.txt", config);
     large_file_handler("/config.html", "text/html", false);
-    sendVariable("msg", "Config saved successfully! Reset your device to apply the new network configuration and access <a href='https://" + config.hostname + "'>https://" + config.hostname + "</a>");
+    sendVariable("msg", "Config saved successfully! Reset your device to apply the new network configuration and access <a href='https://" + 
+                          config.hostname + "'>https://" + 
+                          config.hostname + "</a>\"");
   }else{
     large_file_handler("/config.html", "text/html", false);
     sendVariable("msg", "There are errors in your configuration. Fill all fields.");

@@ -1,34 +1,78 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Network Configuration</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DoorLocking.App</title>    
+        <!-- build:css css/main.css -->
+        <link rel="stylesheet" href="node_modules/purecss/build/pure-min.css">
+        <link rel="stylesheet" href="node_modules/purecss/build/grids-responsive-min.css">
+        <link rel="stylesheet" href="css/styles.css">
+        <!-- endbuild -->
+    </head>
 <body>
-    <h1>Network Configuration</h1>
-    <h3>Thank for using DoorLocking.App! Fill the form bellow to make your device available on your WiFi network.</h3>
-    <h4 id="msg"></h4>
-    <form name="config_form" method="POST" action="/config_handler">
-        <table>
-            <tr>
-                <td align="right"><label for="hostname">Door Name:</label>&nbsp;</td>
-                <td><input type="text" id="hostname" name="hostname"></td>
-            </tr>
-            <tr>
-                <td align="right"><label for="ssid">WiFi Network Name (SSID):</label></td>
-                <td><input type="text" id="ssid" name="ssid"></td>
-            </tr>
-            <tr>
-                <td align="right"><label for="pwd">WiFi Password:</label></td>
-                <td><input type="text" id="pwd" name="pwd"></td>
-            </tr>
-            <tr>
-                <td align="right" colspan="2"><br><button type="submit" value="Send">Send</button></td>
-            </tr>
-        </table>
-    </form>
+    
+    <div id="layout">
+        <!-- Menu toggle -->
+        <a href="#menu" id="menuLink" class="menu-link">
+            <!-- Hamburger icon -->
+            <span></span>
+        </a>
+        <div id="menu">
+            <div class="pure-menu">
+                <a class="pure-menu-heading" href="#">DoorLocking.App</a>
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item"><a href='/open_door' class="pure-menu-link">Open Door</a></li>
+                    <li class="pure-menu-item"><a href='/register_user' class="pure-menu-link">New User</a></li>
+                    <li class="pure-menu-item"><a href='/list_users' class="pure-menu-link">List/Change Users</a></li>
+                    <li class="pure-menu-item"><a href='/logout_handler' class="pure-menu-link">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    
+        <div id="main">
+            <div class="header">
+                <h1>Network Configuration</h1>
+                <h3>Fill the form bellow to make your device available on your WiFi network.</h3>
+                <h4 id="msg"></h4>
+            </div>
+            <div class="content">
+                <form class="pure-form pure-form-stacked" name="config_form" method="POST" action="/config_handler">
+                    <label for="hostname">Door Name:</label>
+                    <input type="text" id="hostname" name="hostname">
+                    <label for="ssid">WiFi Network Name (SSID):</label>
+                    <input type="text" id="ssid" name="ssid">
+                    <label for="pwd">WiFi Password:</label>
+                    <input type="text" id="pwd" name="pwd">
+                    <button type="submit" class="pure-button pure-button-primary" value="Send">Send</button>
+                </form>
+            </div>
+            <div class="footer">
+                <div class="legal pure-g">
+                    <div class="pure-u-1 pure-u-sm-1-2">
+                        <p class="legal-license">
+                            DoorLocking.App v1.0.0<br>
+                            This is free software under <a href="https://www.gnu.org/licenses/lgpl-3.0.pt-br.html">LGPL v3 license</a>.
+                        </p>
+                    </div>
+                
+                    <div class="pure-u-1 pure-u-sm-1-2">
+                        <ul class="legal-links">
+                            <li><a href="https://github.com/diogosmendonca/doorlocking">GitHub Project</a></li>
+                            <li><a href="mailto:diogosmendonca@gmail.com">Contact Us</a></li>
+                        </ul>
+                
+                        <p class="legal-copyright">
+                            © Copyright 2019 DoorLocking.App.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- build:js js/main.js -->
+    <script src="js/ui.js"></script>
+    <!-- endbuild -->
 </body>
 </html>
 <!--
