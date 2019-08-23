@@ -7,6 +7,8 @@
 /src/app/.vscode
 /src/app/package-lock.json
 /src/app/dist
-/src/doorlocking/data
+/src/doorlocking/data/*.html
+/src/doorlocking/data/*.gz
 /src/doorlocking/.vscode
+/src/app/package-lock.json
 

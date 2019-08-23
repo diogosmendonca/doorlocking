@@ -13,7 +13,8 @@ const byte DNS_PORT = 53;
 BearSSL::ESP8266WebServerSecure server(443);
 DNSServer dnsServer;
 View view(&server);
-
+String css_file_name;  
+String js_file_name;
 
 static const char serverCert[] PROGMEM = R"EOF(
 -----BEGIN CERTIFICATE-----
@@ -144,9 +145,22 @@ void setup(void){
   //server.on("/config", [](){view.config_render();});
   //server.on("/config_handler", [](){view.config_handler();});
 
-  //serve static files
-  server.on("/css/main.c4772af9e119017605ea.css", [](){view.large_file_handler("/main.css", "text/css", true);});
-  server.on("/js/main.3909667b5c6799ff32be.js", [](){view.large_file_handler("/main.js", "application/javascript", true);});
+  //serve static files gziped
+  Dir dir = SPIFFS.openDir("/");
+  while (dir.next()) {
+    if(dir.fileSize() && dir.fileName().endsWith(".gz")) {
+      if(dir.fileName().endsWith(".css.gz")){
+        css_file_name = dir.fileName().substring(0,dir.fileName().length()-3);
+        server.on("/css" + css_file_name, [&css_file_name](){view.large_file_handler(css_file_name, "text/css", true);});
+      }
+      if(dir.fileName().endsWith(".js.gz")){
+        js_file_name = dir.fileName().substring(0,dir.fileName().length()-3);
+        server.on("/js" + js_file_name, [&js_file_name](){view.large_file_handler(js_file_name, "application/javascript", true);});
+      }
+    }
+  }
+  //server.on("/css/main.c4772af9e119017605ea.css", [](){view.large_file_handler("/main.css", "text/css", true);});
+  //server.on("/js/main.3909667b5c6799ff32be.js", [](){view.large_file_handler("/main.js", "application/javascript", true);});
 
   //here the list of headers to be recorded
   const char * headerkeys[] = {"User-Agent", "Cookie"} ;

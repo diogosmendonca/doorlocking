@@ -5,6 +5,8 @@ module.exports = function(grunt){
     require('jit-grunt')(grunt, {
         useminPrepare: 'grunt-usemin'
     });
+    grunt.loadNpmTasks('grunt-contrib-compress');
+    
     grunt.initConfig({
 
         sass: {
@@ -44,20 +46,26 @@ module.exports = function(grunt){
                     src: ['*.html'],
                     dest: 'dist'
                 }]
-            }/*,
-            fonts: {
+            },
+            deploy_html: {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: 'node_modules/@fortawesome/fontawesome-free',
-                    src: ['webfonts/fa-solid-900.woff'],
-                    dest: 'dist'
+                    cwd: './dist/',
+                    src: ['*.html'],
+                    dest: '../doorlocking/data'
                 }]
-            }*/
+            }
         },
         clean: {
             build: {
                 src: ['dist/']
+            },
+            deploy: {
+                src: ['../doorlocking/data/*.html', 
+                      '../doorlocking/data/*.js',
+                      '../doorlocking/data/*.css', 
+                      '../doorlocking/data/*.gz']
             }
         },
         imagemin: {
@@ -112,7 +120,7 @@ module.exports = function(grunt){
             options: {
                 encoding: 'utf8',
                 algorithm: 'md5',
-                length: 20
+                length: 5
             },
             release: {
                 files: [{
@@ -143,6 +151,31 @@ module.exports = function(grunt){
                     'dist/config.html': 'dist/config.html'
                 }
             }
+        },
+        // gzip assets 1-to-1 for production
+        compress: {
+            deploy_js: {
+                options: {
+                    mode: 'gzip'
+                },
+                expand: true,
+                cwd: './dist/js',
+                src: ['main.*.js'],
+                dest: '../doorlocking/data',
+                extDot: 'last',
+                ext: '.js.gz'
+            },
+            deploy_css: {
+                options: {
+                    mode: 'gzip'
+                },
+                expand: true,
+                cwd: './dist/css',
+                src: ['main.*.css'],
+                dest: '../doorlocking/data',
+                extDot: 'last',
+                ext: '.css.gz'
+            }
         }
         
     });
@@ -150,8 +183,8 @@ module.exports = function(grunt){
     grunt.registerTask('css', ['sass']);
     grunt.registerTask('default', ['browserSync', 'watch'])
     grunt.registerTask('build', [
-        'clean',
-        'copy',
+        'clean:build',
+        'copy:html',
         'imagemin',
         'useminPrepare',
         'concat',
@@ -159,6 +192,10 @@ module.exports = function(grunt){
         'uglify',
         'filerev',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'clean:deploy',
+        'copy:deploy_html',
+        'compress:deploy_css',
+        'compress:deploy_js'
     ])
 }

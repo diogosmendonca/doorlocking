@@ -1,0 +1,3 @@
+hostname=portasala
+ssid=CONFIG_DOOR
+pwd=AqQWE123!*
