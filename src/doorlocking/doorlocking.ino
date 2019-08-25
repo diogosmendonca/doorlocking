@@ -76,6 +76,9 @@ jbrZ63YkD0V/tYQ7XjekCrsM3g==
 int status = WL_IDLE_STATUS;
 
 void setup(void){
+  pinMode(DOOR_PIN, OUTPUT);
+  digitalWrite(DOOR_PIN, HIGH);
+  
   Serial.begin(115200);
   SPIFFS.begin();
   
@@ -123,8 +126,7 @@ void setup(void){
     dnsServer.start(DNS_PORT, "doorlocking.app", Ip);
   }
 
-  pinMode(DOOR_PIN, OUTPUT);
-  digitalWrite(DOOR_PIN, HIGH);
+  
 
   
   server.setRSACert(new  BearSSL::X509List(serverCert), new BearSSL::PrivateKey(serverKey));
