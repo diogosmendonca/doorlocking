@@ -11,7 +11,7 @@ bool apMode = true;
 
 const byte DNS_PORT = 53;
 BearSSL::ESP8266WebServerSecure server(443);
-DNSServer dnsServer;
+//DNSServer dnsServer;
 View view(&server);
 String css_file_name;  
 String js_file_name;
@@ -129,7 +129,7 @@ void setup(void){
     // latter will blink an LED.
     probeRequestPrintHandler = WiFi.onSoftAPModeProbeRequestReceived(&onProbeRequestPrint);
     
-    if (WiFi.softAP(networkConfig.ssid, networkConfig.pwd, 13, 1, 8) == false) {
+    if (WiFi.softAP(networkConfig.ssid, networkConfig.pwd, 1, 1, 8) == false) {
       Serial.println("WiFi.softAP - error - exiting");
       return;
     }
@@ -143,7 +143,7 @@ void setup(void){
     //WiFi.hostname(networkConfig.hostname);
     //Serial.print("Hostname: ");
     //Serial.println(WiFi.hostname());
-    dnsServer.start(DNS_PORT, "porta.cefet-rj.br", Ip);
+    //dnsServer.start(DNS_PORT, "", Ip);
   }
 
   
@@ -222,5 +222,5 @@ String macToString(const unsigned char* mac) {
 
 void loop(void){
  server.handleClient();
- dnsServer.processNextRequest();
+ //dnsServer.processNextRequest();
 }
