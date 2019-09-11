@@ -16,6 +16,12 @@ View view(&server);
 String css_file_name;  
 String js_file_name;
 
+WiFiEventHandler stationConnectedHandler;
+WiFiEventHandler stationDisconnectedHandler;
+WiFiEventHandler probeRequestPrintHandler;
+WiFiEventHandler probeRequestBlinkHandler;
+
+
 static const char serverCert[] PROGMEM = R"EOF(
 -----BEGIN CERTIFICATE-----
 MIIDlzCCAn+gAwIBAgIJANHwaCDrWILFMA0GCSqGSIb3DQEBCwUAMGIxCzAJBgNV
@@ -108,8 +114,22 @@ void setup(void){
     apMode = true;
     Serial.println(networkConfig.ssid);
     Serial.println(networkConfig.pwd);
+    WiFi.persistent(false);
+
     
-    if (WiFi.softAP(networkConfig.ssid, networkConfig.pwd) == false) {
+    // Register event handlers.
+    // Callback functions will be called as long as these handler objects exist.
+    // Call "onStationConnected" each time a station connects
+    stationConnectedHandler = WiFi.onSoftAPModeStationConnected(&onStationConnected);
+    // Call "onStationDisconnected" each time a station disconnects
+    stationDisconnectedHandler = WiFi.onSoftAPModeStationDisconnected(&onStationDisconnected);
+    // Call "onProbeRequestPrint" and "onProbeRequestBlink" each time
+    // a probe request is received.
+    // Former will print MAC address of the station and RSSI to Serial,
+    // latter will blink an LED.
+    probeRequestPrintHandler = WiFi.onSoftAPModeProbeRequestReceived(&onProbeRequestPrint);
+    
+    if (WiFi.softAP(networkConfig.ssid, networkConfig.pwd, 13, 1, 8) == false) {
       Serial.println("WiFi.softAP - error - exiting");
       return;
     }
@@ -120,10 +140,10 @@ void setup(void){
       Serial.println("WiFi.softAPConfig - error - exiting");
       return;
     }
-    WiFi.hostname(networkConfig.hostname);
-    Serial.print("Hostname: ");
-    Serial.println(WiFi.hostname());
-    dnsServer.start(DNS_PORT, "doorlocking.app", Ip);
+    //WiFi.hostname(networkConfig.hostname);
+    //Serial.print("Hostname: ");
+    //Serial.println(WiFi.hostname());
+    dnsServer.start(DNS_PORT, "porta.cefet-rj.br", Ip);
   }
 
   
@@ -173,6 +193,31 @@ void setup(void){
   server.begin();
   Serial.println("HTTPS server started");
   
+}
+
+void onStationConnected(const WiFiEventSoftAPModeStationConnected& evt) {
+  Serial.print("Station connected: ");
+  Serial.println(macToString(evt.mac));
+}
+
+void onStationDisconnected(const WiFiEventSoftAPModeStationDisconnected& evt) {
+  Serial.print("Station disconnected: ");
+  Serial.println(macToString(evt.mac));
+}
+
+void onProbeRequestPrint(const WiFiEventSoftAPModeProbeRequestReceived& evt) {
+  Serial.print("Probe request from: ");
+  Serial.print(macToString(evt.mac));
+  Serial.print(" RSSI: ");
+  Serial.println(evt.rssi);
+  Serial.printf("Stations connected to soft-AP = %d\n", WiFi.softAPgetStationNum());
+}
+
+String macToString(const unsigned char* mac) {
+  char buf[20];
+  snprintf(buf, sizeof(buf), "%02x:%02x:%02x:%02x:%02x:%02x",
+           mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+  return String(buf);
 }
 
 void loop(void){
