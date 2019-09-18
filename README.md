@@ -2,7 +2,7 @@
 
 # In Action
 
-See in those videos doorlocking.app in action <a href="https://www.youtube.com/watch?v=yd64wglDlZc" target="_blank">with</a> and  <a href="https://www.youtube.com/watch?v=D8Kzh0A3eeo" target="_blank">without</a> a box. Exited about the projet? Follow the instructions bellow to deploy it by yourself! Are you not technical? [Contact me](mailto:diogosmendonca@gmail.com) if you need help to deploy the system. 
+See in those videos doorlocking.app in action <a href="https://www.youtube.com/watch?v=yd64wglDlZc" target="_blank">with</a> and  <a href="https://www.youtube.com/watch?v=D8Kzh0A3eeo" target="_blank">without</a> a box. Excited about the project? Follow the instructions bellow to deploy it by yourself! Are you not technical? [Contact me](mailto:diogosmendonca@gmail.com) if you need help to deploy the system. 
 
 # Hardware Setup
 
