@@ -2,7 +2,7 @@
 
 # In Action
 
-See in those videos doorlocking.app in action <a href="https://www.youtube.com/watch?v=yd64wglDlZc" target="_blank">with</a> and  <a href="https://www.youtube.com/watch?v=D8Kzh0A3eeo" target="_blank">without</a> a box. Exited about the projet? Follow the instructions bellow to deploy it by yourself! You are not technical? [Contact me](mailto:diogosmendonca@gmail.com) if you need help to deploy the system. 
+See in those videos doorlocking.app in action <a href="https://www.youtube.com/watch?v=yd64wglDlZc" target="_blank">with</a> and  <a href="https://www.youtube.com/watch?v=D8Kzh0A3eeo" target="_blank">without</a> a box. Exited about the projet? Follow the instructions bellow to deploy it by yourself! Are you not technical? [Contact me](mailto:diogosmendonca@gmail.com) if you need help to deploy the system. 
 
 # Hardware Setup
 
@@ -40,7 +40,7 @@ Instructions to deploy and testing the system.
 
 5. Using Arduino IDE and Write the dorlocking/data files to the NodeMCU SPIFF file system. See how to [here](http://arduino.esp8266.com/Arduino/versions/2.0.0/doc/filesystem.html).
 
-6. If your wifi network uses DHCP, identify the IP address that wifi router assigned to your microcontroller. A message will be printed in the serial port monitor, if your are usign it. Other option is to check the address assigned in your router admin interface. 
+6. If your wifi network uses DHCP, identify the IP address that wifi router assigned to your microcontroller. A message will be printed in the serial port monitor, if your are using it. Other option is to check the address assigned in your router admin interface. 
 
 7. Access the address of the microcontroller using HTTPS prefix. Example: https://192.168.10.200/
 
