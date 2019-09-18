@@ -1,5 +1,9 @@
 # Doorlocking.App - An open source and secure way to open a door using wifi network. 
 
+# In Action
+
+See in those videos doorlocking.app in action <a href="https://www.youtube.com/watch?v=yd64wglDlZc" target="_blank">with</a> and  <a href="https://www.youtube.com/watch?v=D8Kzh0A3eeo" target="_blank">without</a> a box. Exited about the projet? Follow the instructions bellow to deploy it by yourself! You are not technical? [Contact me](mailto:diogosmendonca@gmail.com) if you need help to deploy the system. 
+
 # Hardware Setup
 
 You will need the hardware bellow to deploy the system (Expected price of all hardware needed: US$20 - US$30):
