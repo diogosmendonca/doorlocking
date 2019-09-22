@@ -307,7 +307,7 @@ void View::open_door_handler(){
   }
   
   digitalWrite(DOOR_PIN, LOW);
-  delay(500);
+  delay(1000);
   digitalWrite(DOOR_PIN, HIGH);
   
   menu("<div class='alert alert-success' role='alert'>Door Succefully Opened</div>");
