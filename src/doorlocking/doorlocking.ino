@@ -82,8 +82,15 @@ jbrZ63YkD0V/tYQ7XjekCrsM3g==
 int status = WL_IDLE_STATUS;
 
 void setup(void){
+  ESP.eraseConfig();
+  ESP.wdtDisable();
+  ESP.wdtFeed();
+  
   pinMode(DOOR_PIN, OUTPUT);
   digitalWrite(DOOR_PIN, HIGH);
+
+  //pinMode(RELAY,OUTPUT);
+  //digitalWrite(RELAY, LOW);
   
   Serial.begin(115200);
   SPIFFS.begin();
@@ -114,7 +121,7 @@ void setup(void){
     apMode = true;
     Serial.println(networkConfig.ssid);
     Serial.println(networkConfig.pwd);
-    WiFi.persistent(false);
+    WiFi.persistent(true);
 
     
     // Register event handlers.
@@ -129,7 +136,7 @@ void setup(void){
     // latter will blink an LED.
     probeRequestPrintHandler = WiFi.onSoftAPModeProbeRequestReceived(&onProbeRequestPrint);
     
-    if (WiFi.softAP(networkConfig.ssid, networkConfig.pwd, 1, 1, 8) == false) {
+    if (WiFi.softAP(networkConfig.ssid, networkConfig.pwd, 1, 1) == false) {
       Serial.println("WiFi.softAP - error - exiting");
       return;
     }
@@ -146,7 +153,7 @@ void setup(void){
     //dnsServer.start(DNS_PORT, "", Ip);
   }
 
-  
+  ESP.wdtFeed();
 
   
   server.setRSACert(new  BearSSL::X509List(serverCert), new BearSSL::PrivateKey(serverKey));
@@ -164,9 +171,10 @@ void setup(void){
   server.on("/deactivate_user_handler", [](){view.deactivate_user_handler();});
   server.on("/view_logs", [](){view.view_logs_handler();});
   server.on("/open_door", [](){view.open_door_handler();});
-  //server.on("/config", [](){view.config_render();});
-  //server.on("/config_handler", [](){view.config_handler();});
+  server.on("/config", [](){view.config_render();});
+  server.on("/config_handler", [](){view.config_handler();});
 
+  ESP.wdtFeed();
   //serve static files gziped
   Dir dir = SPIFFS.openDir("/");
   while (dir.next()) {
@@ -180,6 +188,7 @@ void setup(void){
         server.on("/js" + js_file_name, [&js_file_name](){view.large_file_handler(js_file_name, "application/javascript", true);});
       }
     }
+    ESP.wdtFeed();
   }
   //server.on("/css/main.c4772af9e119017605ea.css", [](){view.large_file_handler("/main.css", "text/css", true);});
   //server.on("/js/main.3909667b5c6799ff32be.js", [](){view.large_file_handler("/main.js", "application/javascript", true);});
@@ -189,20 +198,24 @@ void setup(void){
   size_t headerkeyssize = sizeof(headerkeys) / sizeof(char*);
   //ask server to track these headers
   server.collectHeaders(headerkeys, headerkeyssize);  
-  
+
+  ESP.wdtFeed();
   server.begin();
   Serial.println("HTTPS server started");
+  ESP.wdtFeed();
   
 }
 
 void onStationConnected(const WiFiEventSoftAPModeStationConnected& evt) {
   Serial.print("Station connected: ");
   Serial.println(macToString(evt.mac));
+  ESP.wdtFeed();
 }
 
 void onStationDisconnected(const WiFiEventSoftAPModeStationDisconnected& evt) {
   Serial.print("Station disconnected: ");
   Serial.println(macToString(evt.mac));
+  ESP.wdtFeed();
 }
 
 void onProbeRequestPrint(const WiFiEventSoftAPModeProbeRequestReceived& evt) {
@@ -211,6 +224,7 @@ void onProbeRequestPrint(const WiFiEventSoftAPModeProbeRequestReceived& evt) {
   Serial.print(" RSSI: ");
   Serial.println(evt.rssi);
   Serial.printf("Stations connected to soft-AP = %d\n", WiFi.softAPgetStationNum());
+  ESP.wdtFeed();
 }
 
 String macToString(const unsigned char* mac) {
@@ -222,5 +236,6 @@ String macToString(const unsigned char* mac) {
 
 void loop(void){
  server.handleClient();
+ ESP.wdtFeed();
  //dnsServer.processNextRequest();
 }

@@ -1,0 +1,3 @@
+hostname=porta
+ssid=PORTA
+pwd=minhaporta123!

@@ -48,6 +48,7 @@ bool authenticate(String username, String accessCode, User& u){
       authenticated = true;
       u = users[i];
     }
+    ESP.wdtFeed();
   }
   
   return authenticated;
@@ -65,6 +66,7 @@ void getUsers(vector<User>& users){
     u.userStatus = static_cast<StatusEnum>(getValue(line, '|', 2).toInt());
     u.type = static_cast<UserTypeEnum>(getValue(line, '|', 3).toInt());
     users.push_back(u);
+    ESP.wdtFeed();
   }
   f.close();
 }
@@ -81,6 +83,7 @@ void retrieveUser(User& user){
       user.userStatus = static_cast<StatusEnum>(getValue(line, '|', 2).toInt());
       user.type = static_cast<UserTypeEnum>(getValue(line, '|', 3).toInt());
     }
+    ESP.wdtFeed();
   }
   f.close();
 }
@@ -91,6 +94,7 @@ bool usernameExists(String username, vector<User> &users){
     if(users[i].username == username){
         alreadyExists = true;
     }
+    ESP.wdtFeed();
   }
   return alreadyExists;
 }
@@ -167,6 +171,7 @@ bool retrieveSession(String sessionIdParam, UserSession& session){
       session.username = getValue(line, '|', 1);
       session.sessionStatus = static_cast<StatusEnum>(getValue(line, '|', 2).toInt());
     }
+    ESP.wdtFeed();
   }
   f.close();
   
@@ -218,6 +223,7 @@ bool invalidadeSessions(String username){
     sessionFile.setCharAt(usernameIndex + username.length() + 1, '0');
     usernameIndex = sessionFile.indexOf(username, usernameIndex + 1);
     sessionsFound = true;
+    ESP.wdtFeed();
   }
 
   //rewrite the whole file

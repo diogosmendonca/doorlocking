@@ -16,6 +16,7 @@ void View::home(){
   }
   
   menu("");
+  ESP.wdtFeed();
 }
 
 void View::menu(String msg){
@@ -34,7 +35,7 @@ void View::menu(String msg){
   }else{
     menu_user(msg);
   }
-  
+  ESP.wdtFeed();
 }
 
 void View::menu_user(String msg){
@@ -42,6 +43,7 @@ void View::menu_user(String msg){
   if(msg != NULL && msg != ""){
     sendVariable("msg", msg);
   }
+  ESP.wdtFeed();
 }
 
 void View::menu_admin(String msg){
@@ -49,6 +51,7 @@ void View::menu_admin(String msg){
   if(msg != NULL && msg != ""){
     sendVariable("msg", msg);
   }
+  ESP.wdtFeed();
 }
 
 void View::login_page(String msg){
@@ -56,6 +59,7 @@ void View::login_page(String msg){
   if(msg != NULL && msg != ""){
     sendVariable("msg", msg);
   }
+  ESP.wdtFeed();
 }
 
 void View::login_handler(){
@@ -100,7 +104,7 @@ void View::login_handler(){
     //redirect to login page, missing field in form
     login_page("<div class='alert alert-danger' role='alert'>Authentication Failed</div>");
   }
-  
+  ESP.wdtFeed();
 }
 
 //Check if header is present and correct
@@ -127,15 +131,18 @@ bool View::is_authenticated(UserSession& session) {
       sessionFound = retrieveSession(sessionId, session);
       if(sessionFound){
         Serial.println( session.sessionStatus == ACTIVE ? "Authentication Successful" : "Authentication Failed - Session Inactive");
+        ESP.wdtFeed();
         return session.sessionStatus;
       }else{
         Serial.println("Session not found");
+        ESP.wdtFeed();
         return false;
       }
       
     }
   }
   Serial.println("Authentication Failed");
+  ESP.wdtFeed();
   return false;
 }
 
@@ -159,7 +166,7 @@ void View::logout_handler(){
   }else{
     menu("<div class='alert alert-danger' role='alert'>Unable to logout</div>");
   }
-  
+  ESP.wdtFeed();
 }
 
 void View::list_users(String msg){
@@ -180,6 +187,7 @@ void View::list_users(String msg){
     strUsersList += "\''>";
     strUsersList += (users[i].userStatus == INACTIVE ? "Inactive" : "Active");
     strUsersList += "</button></td></tr>";
+    ESP.wdtFeed();
   }
 
   large_file_handler("/list_users.html", "text/html", false);
@@ -189,7 +197,7 @@ void View::list_users(String msg){
   if(strUsersList != NULL && strUsersList != ""){
     sendVariable("users", strUsersList);
   }
-  
+  ESP.wdtFeed();
 }
 
 void View::register_user_page(){
@@ -198,6 +206,7 @@ void View::register_user_page(){
     login_page("");
     return;
   }
+  ESP.wdtFeed();
   large_file_handler("/register_user.html", "text/html", false);
 }
 
@@ -236,7 +245,7 @@ void View::register_user_handler(){
     msg = "<div class='alert alert-danger' role='alert'>Inform a non blank username.</div>";
     redirectPage = "/register_user.html";
   }
-
+  ESP.wdtFeed();
   large_file_handler(redirectPage, "text/html", false);
   if(msg != NULL && msg != ""){
     sendVariable("msg", msg);
@@ -260,6 +269,7 @@ void View::activate_user_handler(){
       msg = "<div class='alert alert-danger' role='alert'>An problem occurred during user activation.</div>";
     }
   }
+  ESP.wdtFeed();
   this->list_users(msg);
 }
 
@@ -285,6 +295,7 @@ void View::deactivate_user_handler(){
       msg = "<div class='alert alert-danger' role='alert'>An problem occurred during user deactivation.</div>";
     }
   }
+  ESP.wdtFeed();
   this->list_users(msg);
 }
 
@@ -296,6 +307,7 @@ void View::view_logs_handler(){
   }
   
   String f = readFile("/sessions.txt");
+  ESP.wdtFeed();
   server->send(200, "text/plain", f);
 }
 
@@ -305,12 +317,18 @@ void View::open_door_handler(){
     login_page("");
     return;
   }
-  
+  ESP.wdtFeed();
   digitalWrite(DOOR_PIN, LOW);
   delay(1000);
   digitalWrite(DOOR_PIN, HIGH);
+
+  //digitalWrite(RELAY, HIGH);
+  //delay(1000);
+  //digitalWrite(RELAY, LOW);
   
+  ESP.wdtFeed();
   menu("<div class='alert alert-success' role='alert'>Door Succefully Opened</div>");
+  ESP.wdtFeed();
 }
 
 void View::large_file_handler(String fileName, String contentType, bool gziped){
@@ -352,6 +370,7 @@ void View::large_file_handler(String fileName, String contentType, bool gziped){
     }
     f.read((uint8_t *)buf, chunkSize);
     remainingChunks = remainingChunks - chunkSize;
+    ESP.wdtFeed();
     server->sendContent_P(buf, chunkSize);
     bytesSent += chunkSize;
   }
@@ -367,6 +386,7 @@ void View::sendVariable(String variable, String content){
   script.replace("variableName", variable);
   script.replace("content", content);
   Serial.println(script);
+  ESP.wdtFeed();
   server->sendContent(script);
 }
 
@@ -374,6 +394,7 @@ void View::config_render(){
   Serial.print("Config Render");
   //String configHtml = readFile("/config.html");
   //server->send(200, "text/html", configHtml);
+  ESP.wdtFeed();
   large_file_handler("/config.html", "text/html", false);
 }
 
@@ -385,11 +406,13 @@ void View::config_handler(){
     config.pwd = server->arg("pwd");
     
     setNetworkConfig("/network.txt", config);
+    ESP.wdtFeed();
     large_file_handler("/config.html", "text/html", false);
     sendVariable("msg", "Config saved successfully! Reset your device to apply the new network configuration and access <a href='https://" + 
                           config.hostname + "'>https://" + 
                           config.hostname + "</a>\"");
   }else{
+    ESP.wdtFeed();
     large_file_handler("/config.html", "text/html", false);
     sendVariable("msg", "There are errors in your configuration. Fill all fields.");
   }

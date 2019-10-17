@@ -5,7 +5,10 @@
 #include "WString.h"
 #include "model.h"
 
+//nodemcu door pin
 #define DOOR_PIN 13
+//relay module 
+#define RELAY 0
 
 class View{
 	private:
