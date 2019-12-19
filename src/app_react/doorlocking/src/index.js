@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'purecss/build/pure-min.css';
+import 'purecss/build/grids-responsive-min.css';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
