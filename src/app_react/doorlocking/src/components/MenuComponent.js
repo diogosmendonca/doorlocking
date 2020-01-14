@@ -17,6 +17,7 @@ class Menu extends Component {
                             <li className="pure-menu-item"><Link to='/open_door' className="pure-menu-link">Open Door</Link></li>
                             <li className="pure-menu-item"><Link to='/register_user' className="pure-menu-link">New User</Link></li>
                             <li className="pure-menu-item"><Link to='/list_users' className="pure-menu-link">List/Change Users</Link></li>
+                            <li className="pure-menu-item"><Link to='/config' className="pure-menu-link">Configuration</Link></li>
                             <li className="pure-menu-item"><Link to='/logout_handler' className="pure-menu-link">Logout</Link></li>
                         </ul>
                     </div>
