@@ -12,12 +12,16 @@ import Config from './ConfigComponent';
 
 class Main extends Component {
 
+    constructor(props){
+        super(props);
+        this.layout = React.createRef();
+    }
+
     render(){
         return(
-            <div id="layout">
-                <Menu/>
+            <div id="layout" ref={this.layout}>
+                <Menu layout={this.layout}/>
                 <div id="main">
-                    
                     <Switch>
                         <Route path="/" exact component={Home}/>
                         <Route path="/login" component={Login}/>

@@ -1,18 +1,23 @@
 import React, { Component } from "react";
 import {Link} from 'react-router-dom'
 
+/**
+ * Class represents the application menu.
+ * @author Diogo S. Mendonça
+ */
 class Menu extends Component {
 
-
-    componentDidMount(){
-        this.layout   = document.getElementById('layout');
-        this.menu     = document.getElementById('menu');
-        this.menuLink = document.getElementById('menuLink');
-        this.content  = document.getElementById('main');
+    constructor(props){
+        super(props);
+        this.menu = React.createRef();
+        this.menuLink = React.createRef();
+        this.state = {
+            active: false
+        };
     }
 
     handleHideMenu(e){
-        if (this.menu.className.indexOf('active') !== -1) {
+        if (this.state.active) {
             this.toggleAll(e);
         }
     }
@@ -38,21 +43,21 @@ class Menu extends Component {
 
     toggleAll(e) {
         var active = 'active';
-
+        this.setState({active: !this.state.active});
         //e.preventDefault();
-        this.toggleClass(this.layout, active);
-        this.toggleClass(this.menu, active);
-        this.toggleClass(this.menuLink, active);
+        this.toggleClass(this.props.layout.current, active);
+        this.toggleClass(this.menu.current, active);
+        this.toggleClass(this.menuLink.current, active);
     }
 
     render(){
         return(
             <>
-                <a href="#menu" id="menuLink" className="menu-link" onClick={(e) => this.toggleAll(e)}>
+                <a href="#menu" ref={this.menuLink} id="menuLink" className="menu-link" onClick={(e) => this.toggleAll(e)}>
                     <span></span>
                 </a>
 
-                <div id="menu">
+                <div id="menu" ref={this.menu}>
                     <div className="pure-menu">
                         <a className="pure-menu-heading" href="/">DoorLocking.App</a>
                         <ul className="pure-menu-list">
