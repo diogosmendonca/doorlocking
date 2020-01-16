@@ -1,15 +1,24 @@
 import React, { Component } from "react";
 import {Link} from 'react-router-dom'
+import PropTypes from 'prop-types';
 
 /**
  * Application sidebar menu.
  * 
  * @author Diogo S. Mendonça
+ * @example
+ * var layout = React.createRef();
+ * return (
+ *   <div id="layout" ref={layout}>
+ *      <Menu layout={layout} />
+ *   </div>
+ * )
+ *  
  */
 class Menu extends Component {
 
     /**
-     * @param {Object} props {layout: DOMElement} 
+     * @param {Object} props {layout: element} the element that suround the menu.
      */
     constructor(props){
         super(props);
@@ -99,6 +108,13 @@ class Menu extends Component {
             </>
         );
     }
+}
+
+Menu.propTypes = {
+    /**
+     * layout is the element that suround the menu.
+     */
+    layout: PropTypes.element.isRequired,
 }
 
 export default Menu;
