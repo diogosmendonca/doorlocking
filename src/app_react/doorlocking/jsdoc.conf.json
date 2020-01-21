@@ -6,15 +6,13 @@
         "include": ["./src"]
     },
     "plugins": [
-        "plugins/markdown",
-        "node_modules/better-docs/component"
+        "plugins/markdown"
     ],
     "opts": {
         "encoding": "utf8",
         "destination": "docs/",
         "recurse": true,
-        "verbose": true,
-        "template": "./node_modules/better-docs"
+        "verbose": true
     },
     "templates": {
         "better-docs": {

@@ -3,22 +3,65 @@ import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types';
 
 /**
- * Application sidebar menu.
+ * Application sidebar menu module.
+ * 
+ * @module MenuComponent
+ */
+
+
+/**
+ * Object with the properties needed to render a menu item.
+ * 
+ * @typedef {Object} MenuLineItem
+ * @property {string} name - The name of the menu to be shown
+ * @property {string} link - The link of the menu item
+ */
+
+/**
+ * Menu props.
+ * 
+ * @typedef {Object} MenuProps
+ * @property {Object} layout - reference to the div that encloses the menu
+ * @property {Array.<MenuLineItem>} menus - Menus to be displayed
+ * @property {string} heading - Name to be displayed on the top of the menu
+ */
+
+/**
+ * Application sidebar menu component.
  * 
  * @author Diogo S. Mendonça
  * @example
- * var layout = React.createRef();
+ * const layout = React.createRef();
+ * const menus = [
+                    {link: '/open_door', name: 'Open Door'},
+                    {link: '/register_user', name: 'Register User'},
+                    {link: '/list_users', name: 'List/Change Users'},
+                    {link: '/config', name: 'Configuration'},
+                    {link: '/logout_handler', name: 'Logout'}
+                  ]
+ *
+ * const heading = "DoorLocking.App";
  * return (
- *   <div id="layout" ref={layout}>
- *      <Menu layout={layout} />
- *   </div>
+ *   <BrowserRouter>
+ *      <div id="layout" ref={layout}>
+ *          <Menu layout={layout} menus={menus} heading={heading} />
+ *      </div>
+ *   </BrowserRouter>
  * )
  *  
  */
 class Menu extends Component {
 
+    
+
     /**
-     * @param {Object} props {layout: element} the element that suround the menu.
+     * @param {MenuProps} props {layout: element, menus: [{name: 'name', link: 'link}], heading: 'Name of heading'} 
+     * 
+     * element: the element that suround the menu.
+     * menus: array of objects that defines names and links for the menu
+     * heading: text to be displayed on the top of the menu
+     *  @see {@link module:MenuComponent~MenuProps} 
+     *  @see {@link module:MenuComponent~MenuLineItem} 
      */
     constructor(props){
         super(props);
@@ -82,6 +125,22 @@ class Menu extends Component {
     }
 
     /**
+     * Render a line entry of the menu.
+     * 
+     * @param {Object} menu menu to be displayed {name: 'name', link: 'link}
+     * @param {Number} index the index of the menu to generate its id 'menu-index'
+     */
+    _renderMenuLine(menu, index){
+        return(<li className="pure-menu-item" key={'menu-li-' + index}>
+                    <Link onClick={(e) => this.hideMenu(e)} 
+                            to={menu.link} id={'menu-' + index} key={'menu-link-' + index}
+                            className="pure-menu-link">
+                                {menu.name}
+                    </Link>
+                </li>);
+    }
+
+    /**
      * Presents the menu sidebar.
      * Include Link and onClick event handlers to toggle the menu sidebar and to access
      *  the functionalities of the system.
@@ -95,13 +154,9 @@ class Menu extends Component {
 
                 <div id="menu" ref={this._menu}>
                     <div className="pure-menu">
-                        <a className="pure-menu-heading" href="/">DoorLocking.App</a>
+                        <a className="pure-menu-heading" href="/">{this.props.heading}</a>
                         <ul className="pure-menu-list">
-                            <li className="pure-menu-item"><Link onClick={(e) => this.hideMenu(e)} to='/open_door' className="pure-menu-link">Open Door</Link></li>
-                            <li className="pure-menu-item"><Link onClick={(e) => this.hideMenu(e)} to='/register_user' className="pure-menu-link">New User</Link></li>
-                            <li className="pure-menu-item"><Link onClick={(e) => this.hideMenu(e)} to='/list_users' className="pure-menu-link">List/Change Users</Link></li>
-                            <li className="pure-menu-item"><Link onClick={(e) => this.hideMenu(e)} to='/config' className="pure-menu-link">Configuration</Link></li>
-                            <li className="pure-menu-item"><Link onClick={(e) => this.hideMenu(e)} to='/logout_handler' className="pure-menu-link">Logout</Link></li>
+                            {this.props.menus.map((menu, index)=>this._renderMenuLine(menu, index))}
                         </ul>
                     </div>
                 </div>
@@ -111,10 +166,12 @@ class Menu extends Component {
 }
 
 Menu.propTypes = {
-    /**
-     * layout is the element that suround the menu.
-     */
-    layout: PropTypes.element.isRequired,
+    //div that encloses the menu
+    layout: PropTypes.object.isRequired,
+    //menus to be displayed {name: 'name', link: 'link}
+    menus: PropTypes.arrayOf(PropTypes.object).isRequired,
+    //Name to be displayed on the top of the menu
+    heading: PropTypes.string.isRequired
 }
 
 export default Menu;

@@ -15,12 +15,20 @@ class Main extends Component {
     constructor(props){
         super(props);
         this.layout = React.createRef();
+        this.menus = [
+            {link: '/open_door', name: 'Open Door'},
+            {link: '/register_user', name: 'Register User'},
+            {link: '/list_users', name: 'List/Change Users'},
+            {link: '/config', name: 'Configuration'},
+            {link: '/logout_handler', name: 'Logout'}
+        ];
+        this.heading = 'DoorLocking.App';
     }
 
     render(){
         return(
             <div id="layout" ref={this.layout}>
-                <Menu layout={this.layout}/>
+                <Menu layout={this.layout} menus={this.menus} heading={this.heading}/>
                 <div id="main">
                     <Switch>
                         <Route path="/" exact component={Home}/>
